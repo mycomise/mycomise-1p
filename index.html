@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mycomise — 小さなお店の、もうひとつの手。</title>
+  <meta name="description" content="個人店・小規模飲食店のためのシンプルなツール。発注表、シフト希望集約など、月1,980円から。">
+  <meta property="og:title" content="mycomise — 小さなお店の、もうひとつの手。">
+  <meta property="og:description" content="個人店・小規模飲食店のためのシンプルなツール。月1,980円から。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mycomise.com">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAF7F2;
+      color: #2D1A0E;
+      line-height: 1.8;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; }
+    h1, h2, h3 { font-weight: 700; letter-spacing: 0.02em; }
+    h2 { font-size: 24px; margin-bottom: 32px; color: #2D1A0E; text-align: center; }
+    h3 { font-size: 18px; margin-bottom: 12px; }
+    p { margin-bottom: 16px; color: #4A3828; }
+    a { color: #C97A1B; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .hero { background: linear-gradient(180deg, #2D1A0E 0%, #3D2817 100%); color: #F5E6CC; padding: 80px 0 72px; text-align: center; }
+    .hero .logo { font-size: 14px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 32px; font-weight: 500; }
+    .hero h1 { font-size: 32px; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; }
+    .hero .sub { color: #D4B896; font-size: 15px; margin-bottom: 40px; line-height: 1.7; }
+    .cta-form { max-width: 360px; margin: 0 auto; }
+    .cta-button { width: 100%; padding: 14px 24px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.2s; }
+    .cta-button:hover { background: #E89510; }
+    .cta-note { font-size: 12px; color: #A38B6A; margin-top: 16px; line-height: 1.6; }
+    .pain { background: #FAF7F2; }
+    .pain .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 32px; }
+    .pain-list { list-style: none; max-width: 480px; margin: 0 auto; }
+    .pain-list li { padding: 16px 0 16px 32px; border-bottom: 1px solid #E5DDD0; position: relative; font-size: 15px; color: #3D2817; line-height: 1.7; }
+    .pain-list li:before { content: "□"; position: absolute; left: 0; top: 16px; color: #C9A07A; font-size: 18px; }
+    .pain-list li:last-child { border-bottom: none; }
+    .pain .close { text-align: center; margin-top: 32px; font-weight: 500; color: #2D1A0E; }
+    .products { background: #F5EFE5; }
+    .products .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 40px; line-height: 1.8; }
+    .product-card { background: #FFFFFF; border-radius: 12px; padding: 28px 24px; margin-bottom: 16px; border: 1px solid #E5DDD0; }
+    .product-card .icon { font-size: 32px; margin-bottom: 12px; }
+    .product-card h3 { font-size: 18px; margin-bottom: 12px; color: #2D1A0E; }
+    .product-card p { font-size: 14px; color: #5A4838; margin-bottom: 16px; line-height: 1.7; }
+    .product-card .price { font-size: 14px; color: #C97A1B; font-weight: 500; margin-bottom: 8px; }
+    .product-card .status { display: inline-block; font-size: 12px; padding: 4px 10px; border-radius: 4px; background: #FFF4E0; color: #C97A1B; margin-top: 8px; }
+    .roadmap { background: #FAF7F2; }
+    .roadmap-list { list-style: none; max-width: 480px; margin: 0 auto; }
+    .roadmap-list li { padding: 14px 0; border-bottom: 1px solid #E5DDD0; font-size: 15px; color: #3D2817; }
+    .roadmap-list li:last-child { border-bottom: none; }
+    .roadmap-list .status-icon { display: inline-block; width: 28px; }
+    .roadmap-list .date { display: block; font-size: 13px; color: #8A7560; margin-top: 4px; margin-left: 28px; }
+    .roadmap .note { text-align: center; font-size: 13px; color: #8A7560; margin-top: 24px; }
+    .signup { background: #2D1A0E; color: #F5E6CC; text-align: center; }
+    .signup h2 { color: #FFFFFF; }
+    .signup .lead { color: #D4B896; font-size: 15px; margin-bottom: 32px; line-height: 1.8; }
+    .signup-form-wrap { background: #FFFFFF; padding: 24px; border-radius: 12px; max-width: 480px; margin: 0 auto; }
+    .signup .benefits { list-style: none; margin-top: 24px; font-size: 13px; color: #A38B6A; }
+    .signup .benefits li { padding: 4px 0; }
+    .signup .benefits li:before { content: "✓ "; color: #F5A623; margin-right: 4px; }
+    .about { background: #FAF7F2; }
+    .about-body { max-width: 520px; margin: 0 auto; font-size: 15px; line-height: 1.9; color: #3D2817; }
+    .about-body p { margin-bottom: 20px; }
+    .about-body .signature { text-align: right; color: #C97A1B; font-weight: 500; margin-top: 24px; }
+    .contact { background: #F5EFE5; text-align: center; }
+    .contact .lead { font-size: 15px; color: #4A3828; margin-bottom: 32px; line-height: 1.8; }
+    .contact-links { list-style: none; font-size: 15px; line-height: 2.2; }
+    .contact-links li { color: #3D2817; }
+    .contact-links a { color: #C97A1B; }
+    footer { background: #1A0F08; color: #A38B6A; padding: 48px 24px 32px; text-align: center; font-size: 13px; line-height: 1.8; }
+    footer .footer-logo { color: #F5A623; font-size: 14px; letter-spacing: 0.3em; margin-bottom: 8px; }
+    footer .tagline { color: #D4B896; margin-bottom: 24px; }
+    footer .links { margin-bottom: 24px; }
+    footer .links a { color: #A38B6A; margin: 0 8px; font-size: 12px; }
+    footer .copyright { font-size: 11px; color: #6A5640; }
+    @media (min-width: 768px) {
+      .hero { padding: 120px 0 96px; }
+      .hero h1 { font-size: 40px; }
+      h2 { font-size: 28px; }
+      section { padding: 96px 0; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <div class="logo">mycomise</div>
+      <h1>小さなお店の、<br>もうひとつの手。</h1>
+      <p class="sub">個人店のためのシンプルなツール。<br>発注表から、はじまります。</p>
+      <form class="cta-form" action="#signup">
+        <a href="#signup" class="cta-button" style="display:block; text-decoration:none; text-align:center;">先行案内を受け取る</a>
+      </form>
+      <p class="cta-note">リリース時に最初にお知らせします。<br>登録は無料・解除はいつでも可能です。</p>
+    </div>
+  </section>
+
+  <section class="pain">
+    <div class="container">
+      <h2>こんなこと、ありませんか？</h2>
+      <p class="lead">飲食店の毎日には、<br>小さな「めんどう」がたくさん。</p>
+      <ul class="pain-list">
+        <li>業者ごとに発注方法がバラバラ（FAX、LINE、電話、ノート…）</li>
+        <li>シフト希望をLINEで集めてExcelに転記するのが地味につらい</li>
+        <li>大手のシステムは多機能すぎて、結局使いこなせない</li>
+        <li>月3万円のSaaSは、うちには高すぎる</li>
+        <li>パソコン苦手だけど、もうちょっと楽になりたい</li>
+      </ul>
+      <p class="close">ひとつでも当てはまったら、<br>mycomiseが役に立つかもしれません。</p>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="container">
+      <h2>これから作るもの</h2>
+      <p class="lead">mycomiseは、個人店・小規模飲食店のための<br>シンプルなツール群です。</p>
+      <div class="product-card">
+        <div class="icon">📋</div>
+        <h3>発注表</h3>
+        <p>業者ごとの定型注文をスマホでサクッと送信。<br>FAX・LINE・メールに対応予定。</p>
+        <div class="price">月 1,980円（税込）・7日間無料トライアル</div>
+        <span class="status">🚧 開発中・近日リリース</span>
+      </div>
+      <div class="product-card">
+        <div class="icon">📅</div>
+        <h3>シフト希望集約</h3>
+        <p>スタッフからの希望をLINE経由で集めて、自動で1枚の表に。</p>
+        <div class="price">月 1,980円（税込）・セット割 月 2,980円</div>
+        <span class="status">🛠 次に開発予定</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="roadmap">
+    <div class="container">
+      <h2>リリース予定</h2>
+      <ul class="roadmap-list">
+        <li><span class="status-icon">✅</span>構想・ブランド立ち上げ<span class="date">完了</span></li>
+        <li><span class="status-icon">🛠</span>発注表アプリ<span class="date">2026年 夏ごろ</span></li>
+        <li><span class="status-icon">🔜</span>シフト希望集約<span class="date">2026年 秋ごろ</span></li>
+        <li><span class="status-icon">🔜</span>棚卸しアプリ<span class="date">検討中</span></li>
+      </ul>
+      <p class="note">予定は変更になる場合があります。<br>進捗はXとInstagramで発信しています。</p>
+    </div>
+  </section>
+
+  <section id="signup" class="signup">
+    <div class="container">
+      <h2>リリース時に<br>最初に知らせてほしい方へ</h2>
+      <p class="lead">リリースのお知らせのほか、<br>開発の進捗、こだわりポイントなど<br>月1〜2回のペースで配信します。</p>
+      <div class="signup-form-wrap">
+        <iframe data-tally-src="https://tally.so/embed/Ekv96o?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="mycomise リリース通知"></iframe>
+        <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+      </div>
+      <ul class="benefits">
+        <li>登録は無料</li>
+        <li>配信解除はいつでも</li>
+        <li>お送りするのはmycomiseに関することだけ</li>
+        <li>第三者にメールアドレスを共有することはありません</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="container">
+      <h2>はじめまして</h2>
+      <div class="about-body">
+        <p>はじめまして、mycomiseです。</p>
+        <p>個人店や小さな飲食店で働く人たちが、<br>「大手のシステムは合わないけど、<br>毎日のちょっとした手間は減らしたい」<br>と感じている話をよく聞きます。</p>
+        <p>そんな声に応える、<br>ちょうどいいサイズの道具を作りたい。<br>それがmycomiseを始めた理由です。</p>
+        <p>リリースまでもう少しお待ちください。<br>お知らせを楽しみにお待ちいただけたら嬉しいです。</p>
+        <p class="signature">— mycomise</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="container">
+      <h2>ご意見・ご質問</h2>
+      <p class="lead">「こんな機能があったらいいな」<br>「使ってみたい」「取材したい」など、<br>お気軽にご連絡ください。</p>
+      <ul class="contact-links">
+        <li>📧 <a href="mailto:hello@mycomise.com">hello@mycomise.com</a></li>
+        <li>🐦 X: <a href="https://x.com/mycomise" target="_blank" rel="noopener">@mycomise</a></li>
+        <li>📸 Instagram: <a href="https://instagram.com/mycomise.official" target="_blank" rel="noopener">@mycomise.official</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">mycomise</div>
+    <div class="tagline">小さなお店の、もうひとつの手。</div>
+    <div class="links">
+      <a href="privacy.html">プライバシーポリシー</a>
+      ・
+      <a href="mailto:hello@mycomise.com">お問い合わせ</a>
+    </div>
+    <div class="copyright">© 2026 mycomise. All rights reserved.</div>
+  </footer>
+</body>
+</html>
