@@ -12,101 +12,204 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #FAF7F2;
+      background: #F5EFE5;
       color: #2D1A0E;
       line-height: 1.8;
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
     }
-    .container { max-width: 640px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 64px 0; }
-    h1, h2, h3 { font-weight: 700; letter-spacing: 0.02em; }
-    h2 { font-size: 24px; margin-bottom: 32px; color: #2D1A0E; text-align: center; }
-    h3 { font-size: 18px; margin-bottom: 12px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .container-narrow { max-width: 640px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+    h1, h2, h3 { font-family: 'Noto Serif JP', serif; font-weight: 700; letter-spacing: 0.02em; }
+    h2 { font-size: 28px; margin-bottom: 32px; color: #2D1A0E; text-align: center; }
+    h3 { font-size: 20px; margin-bottom: 12px; }
     p { margin-bottom: 16px; color: #4A3828; }
     a { color: #C97A1B; text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .hero { background: linear-gradient(180deg, #2D1A0E 0%, #3D2817 100%); color: #F5E6CC; padding: 80px 0 72px; text-align: center; }
-    .hero .logo { font-size: 14px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 32px; font-weight: 500; }
-    .hero h1 { font-size: 32px; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; }
-    .hero .sub { color: #D4B896; font-size: 15px; margin-bottom: 40px; line-height: 1.7; }
-    .cta-form { max-width: 360px; margin: 0 auto; }
-    .cta-button { width: 100%; padding: 14px 24px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.2s; }
-    .cta-button:hover { background: #E89510; }
-    .cta-note { font-size: 12px; color: #A38B6A; margin-top: 16px; line-height: 1.6; }
+
+    /* Navigation */
+    .nav { position: sticky; top: 0; background: rgba(45, 26, 14, 0.95); backdrop-filter: blur(8px); padding: 14px 24px; z-index: 100; border-bottom: 1px solid rgba(245, 166, 35, 0.2); }
+    .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .nav-logo { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 700; color: #F5A623; letter-spacing: 0.2em; }
+    .nav-logo:hover { text-decoration: none; }
+    .nav-links { display: none; gap: 24px; list-style: none; }
+    .nav-links a { color: #F5E6CC; font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: #F5A623; text-decoration: none; }
+    .nav-cta { background: #F5A623; color: #2D1A0E; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; }
+    .nav-cta:hover { background: #E89510; text-decoration: none; }
+
+    /* Hero */
+    .hero {
+      background:
+        radial-gradient(ellipse at top right, rgba(245, 166, 35, 0.15), transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(245, 166, 35, 0.08), transparent 60%),
+        linear-gradient(180deg, #2D1A0E 0%, #3D2817 100%);
+      color: #F5E6CC;
+      padding: 72px 0 96px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(245, 166, 35, 0.025) 40px, rgba(245, 166, 35, 0.025) 41px);
+      pointer-events: none;
+    }
+    .hero-inner { display: flex; flex-direction: column; gap: 56px; align-items: center; position: relative; }
+    .hero-text { text-align: center; }
+    .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(245, 166, 35, 0.3); border-radius: 20px; }
+    .hero h1 { font-family: 'Noto Serif JP', serif; font-size: 40px; font-weight: 900; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; letter-spacing: 0.02em; }
+    .hero .sub { color: #D4B896; font-size: 16px; margin-bottom: 36px; line-height: 1.9; }
+    .cta-button { display: inline-block; padding: 16px 32px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 16px rgba(245, 166, 35, 0.35); }
+    .cta-button:hover { background: #E89510; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 166, 35, 0.45); }
+    .cta-note { font-size: 12px; color: #A38B6A; margin-top: 20px; line-height: 1.7; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 36px; }
+    .chip { background: rgba(245, 166, 35, 0.12); border: 1px solid rgba(245, 166, 35, 0.35); color: #F5E6CC; padding: 9px 16px; border-radius: 24px; font-size: 13px; font-weight: 500; }
+    .chip strong { color: #F5A623; }
+
+    /* Phone mockup */
+    .mockup-wrap { display: flex; justify-content: center; }
+    .mockup { width: 240px; max-width: 70vw; background: linear-gradient(160deg, #FFF7E8 0%, #F5EFE5 100%); border-radius: 28px; padding: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 6px #1A0F08, 0 0 0 8px #5C3A21; position: relative; }
+    .mockup-screen { background: #FAF7F2; border-radius: 18px; padding: 20px 16px; min-height: 360px; color: #2D1A0E; text-align: left; }
+    .mockup-header { font-family: 'Noto Serif JP', serif; font-size: 12px; font-weight: 700; color: #F5A623; letter-spacing: 0.2em; margin-bottom: 14px; text-align: center; }
+    .mockup-title { font-size: 13px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E5DDD0; color: #2D1A0E; }
+    .mockup-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 12px; color: #4A3828; border-bottom: 1px dashed #E5DDD0; }
+    .mockup-item:last-of-type { border-bottom: none; }
+    .mockup-item-qty { color: #C97A1B; font-weight: 700; }
+    .mockup-button { background: #F5A623; color: #2D1A0E; text-align: center; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-top: 16px; }
+
+    /* Pain */
     .pain { background: #FAF7F2; }
-    .pain .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 32px; }
-    .pain-list { list-style: none; max-width: 480px; margin: 0 auto; }
-    .pain-list li { padding: 16px 0 16px 32px; border-bottom: 1px solid #E5DDD0; position: relative; font-size: 15px; color: #3D2817; line-height: 1.7; }
-    .pain-list li:before { content: "□"; position: absolute; left: 0; top: 16px; color: #C9A07A; font-size: 18px; }
+    .pain .lead { text-align: center; font-size: 16px; color: #4A3828; margin-bottom: 40px; }
+    .pain-list { list-style: none; max-width: 540px; margin: 0 auto; }
+    .pain-list li { padding: 18px 0 18px 36px; border-bottom: 1px solid #E5DDD0; position: relative; font-size: 15px; color: #3D2817; line-height: 1.7; }
+    .pain-list li:before { content: "□"; position: absolute; left: 0; top: 18px; color: #C9A07A; font-size: 20px; font-weight: 700; }
     .pain-list li:last-child { border-bottom: none; }
-    .pain .close { text-align: center; margin-top: 32px; font-weight: 500; color: #2D1A0E; }
+    .pain .close { text-align: center; margin-top: 40px; font-weight: 500; color: #2D1A0E; font-size: 16px; }
+
+    /* Products */
     .products { background: #F5EFE5; }
-    .products .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 40px; line-height: 1.8; }
-    .product-card { background: #FFFFFF; border-radius: 12px; padding: 28px 24px; margin-bottom: 16px; border: 1px solid #E5DDD0; }
-    .product-card .icon { font-size: 32px; margin-bottom: 12px; }
-    .product-card h3 { font-size: 18px; margin-bottom: 12px; color: #2D1A0E; }
-    .product-card p { font-size: 14px; color: #5A4838; margin-bottom: 16px; line-height: 1.7; }
-    .product-card .price { font-size: 14px; color: #C97A1B; font-weight: 500; margin-bottom: 8px; }
-    .product-card .status { display: inline-block; font-size: 12px; padding: 4px 10px; border-radius: 4px; background: #FFF4E0; color: #C97A1B; margin-top: 8px; }
+    .products .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 48px; line-height: 1.8; }
+    .product-grid { display: grid; gap: 20px; max-width: 720px; margin: 0 auto; }
+    .product-card { background: #FFFFFF; border-radius: 12px; padding: 32px 28px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); transition: all 0.2s; }
+    .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45, 26, 14, 0.08); }
+    .product-card .icon { font-size: 36px; margin-bottom: 16px; }
+    .product-card h3 { font-family: 'Noto Serif JP', serif; font-size: 22px; margin-bottom: 12px; color: #2D1A0E; }
+    .product-card p { font-size: 14px; color: #5A4838; margin-bottom: 16px; line-height: 1.8; }
+    .product-card .price { font-size: 14px; color: #C97A1B; font-weight: 500; margin-bottom: 12px; }
+    .product-card .status { display: inline-block; font-size: 12px; padding: 4px 12px; border-radius: 20px; background: #FFF4E0; color: #C97A1B; font-weight: 500; }
+
+    /* Roadmap */
     .roadmap { background: #FAF7F2; }
-    .roadmap-list { list-style: none; max-width: 480px; margin: 0 auto; }
-    .roadmap-list li { padding: 14px 0; border-bottom: 1px solid #E5DDD0; font-size: 15px; color: #3D2817; }
-    .roadmap-list li:last-child { border-bottom: none; }
-    .roadmap-list .status-icon { display: inline-block; width: 28px; }
-    .roadmap-list .date { display: block; font-size: 13px; color: #8A7560; margin-top: 4px; margin-left: 28px; }
-    .roadmap .note { text-align: center; font-size: 13px; color: #8A7560; margin-top: 24px; }
-    .signup { background: #2D1A0E; color: #F5E6CC; text-align: center; }
-    .signup h2 { color: #FFFFFF; }
-    .signup .lead { color: #D4B896; font-size: 15px; margin-bottom: 32px; line-height: 1.8; }
-    .signup-form-wrap { background: #FFFFFF; padding: 24px; border-radius: 12px; max-width: 480px; margin: 0 auto; }
-    .signup .benefits { list-style: none; margin-top: 24px; font-size: 13px; color: #A38B6A; }
+    .roadmap-list { list-style: none; max-width: 540px; margin: 0 auto; position: relative; }
+    .roadmap-list:before { content: ""; position: absolute; left: 20px; top: 16px; bottom: 16px; width: 2px; background: linear-gradient(180deg, #F5A623, rgba(245, 166, 35, 0.2)); }
+    .roadmap-list li { padding: 16px 0 16px 60px; position: relative; font-size: 15px; color: #3D2817; }
+    .roadmap-list .status-icon { position: absolute; left: 8px; top: 14px; width: 28px; height: 28px; border-radius: 50%; background: #FAF7F2; border: 2px solid #F5A623; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #C97A1B; }
+    .roadmap-list .date { display: block; font-size: 13px; color: #8A7560; margin-top: 4px; }
+    .roadmap .note { text-align: center; font-size: 13px; color: #8A7560; margin-top: 32px; }
+
+    /* Signup */
+    .signup { background: linear-gradient(180deg, #2D1A0E 0%, #1A0F08 100%); color: #F5E6CC; text-align: center; position: relative; overflow: hidden; }
+    .signup::before { content: ""; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(245, 166, 35, 0.1) 0%, transparent 70%); pointer-events: none; }
+    .signup h2 { color: #FFFFFF; position: relative; }
+    .signup .lead { color: #D4B896; font-size: 15px; margin-bottom: 32px; line-height: 1.9; position: relative; }
+    .signup-form-wrap { background: #FFFFFF; padding: 28px 24px; border-radius: 12px; max-width: 480px; margin: 0 auto; position: relative; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+    .signup .benefits { list-style: none; margin-top: 28px; font-size: 13px; color: #A38B6A; position: relative; }
     .signup .benefits li { padding: 4px 0; }
-    .signup .benefits li:before { content: "✓ "; color: #F5A623; margin-right: 4px; }
-    .about { background: #FAF7F2; }
-    .about-body { max-width: 520px; margin: 0 auto; font-size: 15px; line-height: 1.9; color: #3D2817; }
+    .signup .benefits li:before { content: "✓ "; color: #F5A623; margin-right: 4px; font-weight: 700; }
+
+    /* About */
+    .about { background: #F5EFE5; }
+    .about-body { max-width: 560px; margin: 0 auto; font-size: 15px; line-height: 2; color: #3D2817; }
     .about-body p { margin-bottom: 20px; }
-    .about-body .signature { text-align: right; color: #C97A1B; font-weight: 500; margin-top: 24px; }
-    .contact { background: #F5EFE5; text-align: center; }
-    .contact .lead { font-size: 15px; color: #4A3828; margin-bottom: 32px; line-height: 1.8; }
-    .contact-links { list-style: none; font-size: 15px; line-height: 2.2; }
+    .about-body .signature { text-align: right; color: #C97A1B; font-weight: 500; margin-top: 24px; font-family: 'Noto Serif JP', serif; }
+
+    /* Contact */
+    .contact { background: #FAF7F2; text-align: center; }
+    .contact .lead { font-size: 15px; color: #4A3828; margin-bottom: 32px; line-height: 1.9; }
+    .contact-links { list-style: none; font-size: 15px; line-height: 2.4; }
     .contact-links li { color: #3D2817; }
     .contact-links a { color: #C97A1B; }
-    footer { background: #1A0F08; color: #A38B6A; padding: 48px 24px 32px; text-align: center; font-size: 13px; line-height: 1.8; }
-    footer .footer-logo { color: #F5A623; font-size: 14px; letter-spacing: 0.3em; margin-bottom: 8px; }
-    footer .tagline { color: #D4B896; margin-bottom: 24px; }
-    footer .links { margin-bottom: 24px; }
-    footer .links a { color: #A38B6A; margin: 0 8px; font-size: 12px; }
+
+    /* Footer */
+    footer { background: #1A0F08; color: #A38B6A; padding: 56px 24px 32px; text-align: center; font-size: 13px; line-height: 1.8; }
+    footer .footer-logo { font-family: 'Noto Serif JP', serif; color: #F5A623; font-size: 20px; font-weight: 700; letter-spacing: 0.3em; margin-bottom: 8px; }
+    footer .tagline { color: #D4B896; margin-bottom: 28px; font-size: 13px; }
+    footer .links { margin-bottom: 28px; }
+    footer .links a { color: #A38B6A; margin: 0 12px; font-size: 12px; }
     footer .copyright { font-size: 11px; color: #6A5640; }
+
+    /* Desktop */
     @media (min-width: 768px) {
-      .hero { padding: 120px 0 96px; }
-      .hero h1 { font-size: 40px; }
-      h2 { font-size: 28px; }
-      section { padding: 96px 0; }
+      .hero { padding: 100px 0 120px; }
+      .hero-inner { flex-direction: row; gap: 64px; justify-content: space-between; align-items: center; }
+      .hero-text { text-align: left; flex: 1; }
+      .hero h1 { font-size: 52px; }
+      .hero .sub { font-size: 18px; }
+      .chips { justify-content: flex-start; }
+      h2 { font-size: 32px; }
+      section { padding: 100px 0; }
+      .nav-links { display: flex; }
+      .product-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
-  <section class="hero">
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="nav-logo">mycomise</a>
+      <ul class="nav-links">
+        <li><a href="#pain">課題</a></li>
+        <li><a href="#products">サービス</a></li>
+        <li><a href="#roadmap">予定</a></li>
+        <li><a href="#about">運営者</a></li>
+      </ul>
+      <a href="#signup" class="nav-cta">先行案内</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="top">
     <div class="container">
-      <div class="logo">mycomise</div>
-      <h1>小さなお店の、<br>もうひとつの手。</h1>
-      <p class="sub">個人店のためのシンプルなツール。<br>発注表から、はじまります。</p>
-      <form class="cta-form" action="#signup">
-        <a href="#signup" class="cta-button" style="display:block; text-decoration:none; text-align:center;">先行案内を受け取る</a>
-      </form>
-      <p class="cta-note">リリース時に最初にお知らせします。<br>登録は無料・解除はいつでも可能です。</p>
+      <div class="hero-inner">
+        <div class="hero-text">
+          <span class="hero-tag">FOR SMALL RESTAURANTS</span>
+          <h1>小さなお店の、<br>もうひとつの手。</h1>
+          <p class="sub">個人店のためのシンプルなツール。<br>発注表から、はじまります。</p>
+          <a href="#signup" class="cta-button">先行案内を受け取る</a>
+          <p class="cta-note">リリース時に最初にお知らせします。<br>登録は無料・解除はいつでも可能です。</p>
+          <div class="chips">
+            <span class="chip">📝 発注が<strong>ラク</strong>に</span>
+            <span class="chip">⏱ <strong>時短</strong>になる</span>
+            <span class="chip">💴 月 <strong>1,980円〜</strong></span>
+          </div>
+        </div>
+        <div class="mockup-wrap">
+          <div class="mockup">
+            <div class="mockup-screen">
+              <div class="mockup-header">発注表</div>
+              <div class="mockup-title">○○商店（5/18 朝）</div>
+              <div class="mockup-item"><span>鶏もも肉</span><span class="mockup-item-qty">3kg</span></div>
+              <div class="mockup-item"><span>ねぎ</span><span class="mockup-item-qty">10束</span></div>
+              <div class="mockup-item"><span>手羽先</span><span class="mockup-item-qty">2kg</span></div>
+              <div class="mockup-item"><span>レモン</span><span class="mockup-item-qty">5個</span></div>
+              <div class="mockup-item"><span>レバー</span><span class="mockup-item-qty">1kg</span></div>
+              <div class="mockup-button">LINEで送信</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="pain">
-    <div class="container">
+  <section class="pain" id="pain">
+    <div class="container-narrow">
       <h2>こんなこと、ありませんか？</h2>
       <p class="lead">飲食店の毎日には、<br>小さな「めんどう」がたくさん。</p>
       <ul class="pain-list">
@@ -120,42 +223,44 @@
     </div>
   </section>
 
-  <section class="products">
+  <section class="products" id="products">
     <div class="container">
       <h2>これから作るもの</h2>
       <p class="lead">mycomiseは、個人店・小規模飲食店のための<br>シンプルなツール群です。</p>
-      <div class="product-card">
-        <div class="icon">📋</div>
-        <h3>発注表</h3>
-        <p>業者ごとの定型注文をスマホでサクッと送信。<br>FAX・LINE・メールに対応予定。</p>
-        <div class="price">月 1,980円（税込）・7日間無料トライアル</div>
-        <span class="status">🚧 開発中・近日リリース</span>
-      </div>
-      <div class="product-card">
-        <div class="icon">📅</div>
-        <h3>シフト希望集約</h3>
-        <p>スタッフからの希望をLINE経由で集めて、自動で1枚の表に。</p>
-        <div class="price">月 1,980円（税込）・セット割 月 2,980円</div>
-        <span class="status">🛠 次に開発予定</span>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="icon">📋</div>
+          <h3>発注表</h3>
+          <p>業者ごとの定型注文をスマホでサクッと送信。FAX・LINE・メールに対応予定。</p>
+          <div class="price">月 1,980円（税込）・7日間無料</div>
+          <span class="status">🚧 開発中・近日リリース</span>
+        </div>
+        <div class="product-card">
+          <div class="icon">📅</div>
+          <h3>シフト希望集約</h3>
+          <p>スタッフからの希望をLINE経由で集めて、自動で1枚の表に。</p>
+          <div class="price">月 1,980円・セット割 2,980円</div>
+          <span class="status">🛠 次に開発予定</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="roadmap">
-    <div class="container">
+  <section class="roadmap" id="roadmap">
+    <div class="container-narrow">
       <h2>リリース予定</h2>
       <ul class="roadmap-list">
-        <li><span class="status-icon">✅</span>構想・ブランド立ち上げ<span class="date">完了</span></li>
-        <li><span class="status-icon">🛠</span>発注表アプリ<span class="date">2026年 夏ごろ</span></li>
-        <li><span class="status-icon">🔜</span>シフト希望集約<span class="date">2026年 秋ごろ</span></li>
-        <li><span class="status-icon">🔜</span>棚卸しアプリ<span class="date">検討中</span></li>
+        <li><span class="status-icon">✓</span>構想・ブランド立ち上げ<span class="date">完了</span></li>
+        <li><span class="status-icon">⚒</span>発注表アプリ<span class="date">2026年 夏ごろ</span></li>
+        <li><span class="status-icon">→</span>シフト希望集約<span class="date">2026年 秋ごろ</span></li>
+        <li><span class="status-icon">?</span>棚卸しアプリ<span class="date">検討中</span></li>
       </ul>
       <p class="note">予定は変更になる場合があります。<br>進捗はXとInstagramで発信しています。</p>
     </div>
   </section>
 
   <section id="signup" class="signup">
-    <div class="container">
+    <div class="container-narrow">
       <h2>リリース時に<br>最初に知らせてほしい方へ</h2>
       <p class="lead">リリースのお知らせのほか、<br>開発の進捗、こだわりポイントなど<br>月1〜2回のペースで配信します。</p>
       <div class="signup-form-wrap">
@@ -171,27 +276,27 @@
     </div>
   </section>
 
-  <section class="about">
-    <div class="container">
+  <section class="about" id="about">
+    <div class="container-narrow">
       <h2>はじめまして</h2>
       <div class="about-body">
         <p>はじめまして、mycomiseです。</p>
-        <p>個人店や小さな飲食店で働く人たちが、<br>「大手のシステムは合わないけど、<br>毎日のちょっとした手間は減らしたい」<br>と感じている話をよく聞きます。</p>
-        <p>そんな声に応える、<br>ちょうどいいサイズの道具を作りたい。<br>それがmycomiseを始めた理由です。</p>
-        <p>リリースまでもう少しお待ちください。<br>お知らせを楽しみにお待ちいただけたら嬉しいです。</p>
+        <p>個人店や小さな飲食店で働く人たちが、「大手のシステムは合わないけど、毎日のちょっとした手間は減らしたい」と感じている話をよく聞きます。</p>
+        <p>そんな声に応える、ちょうどいいサイズの道具を作りたい。それがmycomiseを始めた理由です。</p>
+        <p>リリースまでもう少しお待ちください。お知らせを楽しみにお待ちいただけたら嬉しいです。</p>
         <p class="signature">— mycomise</p>
       </div>
     </div>
   </section>
 
   <section class="contact">
-    <div class="container">
+    <div class="container-narrow">
       <h2>ご意見・ご質問</h2>
       <p class="lead">「こんな機能があったらいいな」<br>「使ってみたい」「取材したい」など、<br>お気軽にご連絡ください。</p>
       <ul class="contact-links">
         <li>📧 <a href="mailto:hello@mycomise.com">hello@mycomise.com</a></li>
-        <li>🐦 X: <a href="https://x.com/mycomise" target="_blank" rel="noopener">@mycomise</a></li>
-        <li>📸 Instagram: <a href="https://instagram.com/mycomise.official" target="_blank" rel="noopener">@mycomise.official</a></li>
+        <li>𝕏 <a href="https://x.com/mycomise" target="_blank" rel="noopener">@mycomise</a></li>
+        <li>📸 <a href="https://instagram.com/mycomise.official" target="_blank" rel="noopener">@mycomise.official</a></li>
       </ul>
     </div>
   </section>
@@ -206,5 +311,6 @@
     </div>
     <div class="copyright">© 2026 mycomise. All rights reserved.</div>
   </footer>
+
 </body>
 </html>
