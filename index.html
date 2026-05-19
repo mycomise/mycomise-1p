@@ -34,8 +34,32 @@
     a { color: #C97A1B; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* === 古民家風 装飾要素 === */
+    .noren-divider {
+      height: 32px;
+      background: linear-gradient(90deg, #5C3A21 0%, #5C3A21 100%);
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2) inset;
+    }
+    .noren-divider::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background-image: repeating-linear-gradient(90deg, #5C3A21 0, #5C3A21 22px, transparent 22px, transparent 28px);
+    }
+    .washi-bg {
+      background-color: #F5EFE5;
+      background-image:
+        radial-gradient(circle at 25% 25%, rgba(201, 122, 27, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(91, 56, 23, 0.04) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(91, 56, 23, 0.015) 2px, rgba(91, 56, 23, 0.015) 4px);
+    }
+
     /* Navigation */
-    .nav { position: sticky; top: 0; background: rgba(45, 26, 14, 0.95); backdrop-filter: blur(8px); padding: 14px 24px; z-index: 100; border-bottom: 1px solid rgba(245, 166, 35, 0.2); }
+    .nav { position: sticky; top: 0; background: rgba(45, 26, 14, 0.95); backdrop-filter: blur(8px); padding: 14px 24px; z-index: 100; border-bottom: 1px solid rgba(245, 166, 35, 0.25); }
     .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .nav-logo { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 700; color: #F5A623; letter-spacing: 0.2em; }
     .nav-logo:hover { text-decoration: none; }
@@ -45,37 +69,63 @@
     .nav-cta { background: #F5A623; color: #2D1A0E; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; }
     .nav-cta:hover { background: #E89510; text-decoration: none; }
 
-    /* Hero */
+    /* Hero with 外観.jpg background */
     .hero {
-      background:
-        radial-gradient(ellipse at top right, rgba(245, 166, 35, 0.15), transparent 50%),
-        radial-gradient(ellipse at bottom left, rgba(245, 166, 35, 0.08), transparent 60%),
-        linear-gradient(180deg, #2D1A0E 0%, #3D2817 100%);
+      background-image:
+        linear-gradient(rgba(45, 26, 14, 0.88), rgba(61, 40, 23, 0.92)),
+        url('外観.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: scroll;
       color: #F5E6CC;
-      padding: 72px 0 96px;
+      padding: 60px 0 96px;
       position: relative;
       overflow: hidden;
     }
     .hero::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(245, 166, 35, 0.025) 40px, rgba(245, 166, 35, 0.025) 41px);
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at top right, rgba(245, 166, 35, 0.2), transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(245, 166, 35, 0.1), transparent 60%);
       pointer-events: none;
     }
-    .hero-inner { display: flex; flex-direction: column; gap: 56px; align-items: center; position: relative; }
+    .hero-lanterns {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 32px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+    .lantern-svg { animation: sway 4s ease-in-out infinite; transform-origin: top center; }
+    .lantern-svg:nth-child(2) { animation-delay: 0.5s; }
+    .lantern-svg:nth-child(3) { animation-delay: 1s; }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+
+    .hero-inner { display: flex; flex-direction: column; gap: 56px; align-items: center; position: relative; padding-top: 80px; z-index: 2; }
     .hero-text { text-align: center; }
-    .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(245, 166, 35, 0.3); border-radius: 20px; }
-    .hero h1 { font-family: 'Noto Serif JP', serif; font-size: 40px; font-weight: 900; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; letter-spacing: 0.02em; }
-    .hero .sub { color: #D4B896; font-size: 16px; margin-bottom: 36px; line-height: 1.9; }
-    .cta-button { display: inline-block; padding: 16px 32px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 16px rgba(245, 166, 35, 0.35); }
-    .cta-button:hover { background: #E89510; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 166, 35, 0.45); }
+    .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(245, 166, 35, 0.4); border-radius: 20px; background: rgba(0,0,0,0.3); }
+    .hero h1 { font-family: 'Noto Serif JP', serif; font-size: 40px; font-weight: 900; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; letter-spacing: 0.02em; text-shadow: 0 2px 16px rgba(0,0,0,0.5); }
+    .hero .sub { color: #D4B896; font-size: 16px; margin-bottom: 36px; line-height: 1.9; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .cta-button { display: inline-block; padding: 16px 32px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 20px rgba(245, 166, 35, 0.45); }
+    .cta-button:hover { background: #E89510; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245, 166, 35, 0.55); }
     .cta-note { font-size: 12px; color: #A38B6A; margin-top: 20px; line-height: 1.7; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 36px; }
-    .chip { background: rgba(245, 166, 35, 0.12); border: 1px solid rgba(245, 166, 35, 0.35); color: #F5E6CC; padding: 9px 16px; border-radius: 24px; font-size: 13px; font-weight: 500; }
+    .chip { background: rgba(245, 166, 35, 0.18); border: 1px solid rgba(245, 166, 35, 0.45); color: #F5E6CC; padding: 9px 16px; border-radius: 24px; font-size: 13px; font-weight: 500; backdrop-filter: blur(4px); }
     .chip strong { color: #F5A623; }
 
     /* Phone mockup */
     .mockup-wrap { display: flex; justify-content: center; }
-    .mockup { width: 240px; max-width: 70vw; background: linear-gradient(160deg, #FFF7E8 0%, #F5EFE5 100%); border-radius: 28px; padding: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 6px #1A0F08, 0 0 0 8px #5C3A21; position: relative; }
+    .mockup { width: 240px; max-width: 70vw; background: linear-gradient(160deg, #FFF7E8 0%, #F5EFE5 100%); border-radius: 28px; padding: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 6px #1A0F08, 0 0 0 8px #5C3A21; position: relative; }
     .mockup-screen { background: #FAF7F2; border-radius: 18px; padding: 20px 16px; min-height: 360px; color: #2D1A0E; text-align: left; }
     .mockup-header { font-family: 'Noto Serif JP', serif; font-size: 12px; font-weight: 700; color: #F5A623; letter-spacing: 0.2em; margin-bottom: 14px; text-align: center; }
     .mockup-title { font-size: 13px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E5DDD0; color: #2D1A0E; }
@@ -85,19 +135,54 @@
     .mockup-button { background: #F5A623; color: #2D1A0E; text-align: center; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-top: 16px; }
 
     /* Pain */
-    .pain { background: #FAF7F2; }
+    .pain { position: relative; }
     .pain .lead { text-align: center; font-size: 16px; color: #4A3828; margin-bottom: 40px; }
-    .pain-list { list-style: none; max-width: 540px; margin: 0 auto; }
-    .pain-list li { padding: 18px 0 18px 36px; border-bottom: 1px solid #E5DDD0; position: relative; font-size: 15px; color: #3D2817; line-height: 1.7; }
-    .pain-list li:before { content: "□"; position: absolute; left: 0; top: 18px; color: #C9A07A; font-size: 20px; font-weight: 700; }
+    .pain-list { list-style: none; max-width: 540px; margin: 0 auto; background: #FFFFFF; padding: 24px 32px; border-radius: 12px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); }
+    .pain-list li { padding: 16px 0 16px 36px; border-bottom: 1px dashed #E5DDD0; position: relative; font-size: 15px; color: #3D2817; line-height: 1.7; }
+    .pain-list li:before { content: "✓"; position: absolute; left: 0; top: 16px; color: #C97A1B; font-size: 18px; font-weight: 700; }
     .pain-list li:last-child { border-bottom: none; }
     .pain .close { text-align: center; margin-top: 40px; font-weight: 500; color: #2D1A0E; font-size: 16px; }
+
+    /* Yakitori banner section */
+    .feature-banner {
+      background-image:
+        linear-gradient(rgba(26, 15, 8, 0.6), rgba(45, 26, 14, 0.7)),
+        url('焼き鳥.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 24px;
+      text-align: center;
+      color: #F5E6CC;
+      position: relative;
+    }
+    .feature-banner-text {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .feature-banner-quote {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.7;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+    .feature-banner-sub {
+      color: #D4B896;
+      font-size: 15px;
+      line-height: 1.9;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    }
 
     /* Products */
     .products { background: #F5EFE5; }
     .products .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 48px; line-height: 1.8; }
     .product-grid { display: grid; gap: 20px; max-width: 720px; margin: 0 auto; }
-    .product-card { background: #FFFFFF; border-radius: 12px; padding: 32px 28px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); transition: all 0.2s; }
+    .product-card { background: #FFFFFF; border-radius: 12px; padding: 32px 28px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); transition: all 0.2s; position: relative; overflow: hidden; }
+    .product-card::before { content: ""; position: absolute; top: 0; left: 0; height: 4px; width: 100%; background: linear-gradient(90deg, #F5A623, #C97A1B); }
     .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45, 26, 14, 0.08); }
     .product-card .icon { font-size: 36px; margin-bottom: 16px; }
     .product-card h3 { font-family: 'Noto Serif JP', serif; font-size: 22px; margin-bottom: 12px; color: #2D1A0E; }
@@ -126,8 +211,9 @@
 
     /* About */
     .about { background: #F5EFE5; }
-    .about-body { max-width: 560px; margin: 0 auto; font-size: 15px; line-height: 2; color: #3D2817; }
+    .about-body { max-width: 560px; margin: 0 auto; font-size: 15px; line-height: 2; color: #3D2817; background: #FFFFFF; padding: 36px 32px; border-radius: 12px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); }
     .about-body p { margin-bottom: 20px; }
+    .about-body p:last-of-type { margin-bottom: 0; }
     .about-body .signature { text-align: right; color: #C97A1B; font-weight: 500; margin-top: 24px; font-family: 'Noto Serif JP', serif; }
 
     /* Contact */
@@ -138,7 +224,8 @@
     .contact-links a { color: #C97A1B; }
 
     /* Footer */
-    footer { background: #1A0F08; color: #A38B6A; padding: 56px 24px 32px; text-align: center; font-size: 13px; line-height: 1.8; }
+    footer { background: #1A0F08; color: #A38B6A; padding: 56px 24px 32px; text-align: center; font-size: 13px; line-height: 1.8; position: relative; }
+    footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, #F5A623, transparent); }
     footer .footer-logo { font-family: 'Noto Serif JP', serif; color: #F5A623; font-size: 20px; font-weight: 700; letter-spacing: 0.3em; margin-bottom: 8px; }
     footer .tagline { color: #D4B896; margin-bottom: 28px; font-size: 13px; }
     footer .links { margin-bottom: 28px; }
@@ -147,8 +234,8 @@
 
     /* Desktop */
     @media (min-width: 768px) {
-      .hero { padding: 100px 0 120px; }
-      .hero-inner { flex-direction: row; gap: 64px; justify-content: space-between; align-items: center; }
+      .hero { padding: 80px 0 120px; background-attachment: fixed; }
+      .hero-inner { flex-direction: row; gap: 64px; justify-content: space-between; align-items: center; padding-top: 100px; }
       .hero-text { text-align: left; flex: 1; }
       .hero h1 { font-size: 52px; }
       .hero .sub { font-size: 18px; }
@@ -157,10 +244,32 @@
       section { padding: 100px 0; }
       .nav-links { display: flex; }
       .product-grid { grid-template-columns: 1fr 1fr; }
+      .feature-banner { padding: 140px 24px; background-attachment: fixed; }
+      .feature-banner-quote { font-size: 32px; }
     }
   </style>
 </head>
 <body>
+
+  <svg width="0" height="0" style="position:absolute;">
+    <symbol id="lantern" viewBox="0 0 60 80">
+      <line x1="30" y1="0" x2="30" y2="8" stroke="#5C3A21" stroke-width="1.5"/>
+      <rect x="22" y="8" width="16" height="3" fill="#3D2817" rx="1"/>
+      <ellipse cx="30" cy="40" rx="22" ry="28" fill="#E74C3C"/>
+      <ellipse cx="30" cy="40" rx="22" ry="28" fill="url(#lantern-glow)" opacity="0.5"/>
+      <line x1="8" y1="20" x2="52" y2="20" stroke="#8B1F1F" stroke-width="1" opacity="0.5"/>
+      <line x1="8" y1="40" x2="52" y2="40" stroke="#8B1F1F" stroke-width="1" opacity="0.5"/>
+      <line x1="8" y1="60" x2="52" y2="60" stroke="#8B1F1F" stroke-width="1" opacity="0.5"/>
+      <rect x="22" y="68" width="16" height="3" fill="#3D2817" rx="1"/>
+      <line x1="26" y1="71" x2="26" y2="76" stroke="#3D2817" stroke-width="1"/>
+      <line x1="34" y1="71" x2="34" y2="76" stroke="#3D2817" stroke-width="1"/>
+      <text x="30" y="48" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="20" font-weight="900" fill="#FFFFFF" opacity="0.95">店</text>
+    </symbol>
+    <radialGradient id="lantern-glow" cx="50%" cy="40%">
+      <stop offset="0%" stop-color="#FFE4B5" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FFE4B5" stop-opacity="0"/>
+    </radialGradient>
+  </svg>
 
   <nav class="nav">
     <div class="nav-inner">
@@ -176,6 +285,11 @@
   </nav>
 
   <section class="hero" id="top">
+    <div class="hero-lanterns">
+      <svg class="lantern-svg" width="50" height="65" viewBox="0 0 60 80"><use href="#lantern"/></svg>
+      <svg class="lantern-svg" width="60" height="80" viewBox="0 0 60 80"><use href="#lantern"/></svg>
+      <svg class="lantern-svg" width="50" height="65" viewBox="0 0 60 80"><use href="#lantern"/></svg>
+    </div>
     <div class="container">
       <div class="hero-inner">
         <div class="hero-text">
@@ -208,7 +322,9 @@
     </div>
   </section>
 
-  <section class="pain" id="pain">
+  <div class="noren-divider"></div>
+
+  <section class="pain washi-bg" id="pain">
     <div class="container-narrow">
       <h2>こんなこと、ありませんか？</h2>
       <p class="lead">飲食店の毎日には、<br>小さな「めんどう」がたくさん。</p>
@@ -220,6 +336,13 @@
         <li>パソコン苦手だけど、もうちょっと楽になりたい</li>
       </ul>
       <p class="close">ひとつでも当てはまったら、<br>mycomiseが役に立つかもしれません。</p>
+    </div>
+  </section>
+
+  <section class="feature-banner">
+    <div class="feature-banner-text">
+      <p class="feature-banner-quote">焼き鳥屋、町中華、定食屋、小料理屋。<br>町を支える、小さなお店たちへ。</p>
+      <p class="feature-banner-sub">毎日の「ちょっとした手間」を、ひとつずつ。</p>
     </div>
   </section>
 
