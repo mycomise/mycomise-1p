@@ -9,7 +9,9 @@
   <meta property="og:description" content="個人店・小規模飲食店のためのシンプルなツール。月1,980円から。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mycomise.com">
+  <meta property="og:image" content="https://mycomise.com/mycomiselogo.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/jpeg" href="mycomiselogo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet">
@@ -31,10 +33,11 @@
     .noren-divider::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background-image: repeating-linear-gradient(90deg, #5C3A21 0, #5C3A21 22px, transparent 22px, transparent 28px); }
     .washi-bg { background-color: #F5EFE5; background-image: radial-gradient(circle at 25% 25%, rgba(201, 122, 27, 0.04) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(91, 56, 23, 0.04) 0%, transparent 50%), repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(91, 56, 23, 0.015) 2px, rgba(91, 56, 23, 0.015) 4px); }
 
-    .nav { position: sticky; top: 0; background: rgba(45, 26, 14, 0.95); backdrop-filter: blur(8px); padding: 14px 24px; z-index: 100; border-bottom: 1px solid rgba(245, 166, 35, 0.25); }
+    .nav { position: sticky; top: 0; background: rgba(45, 26, 14, 0.95); backdrop-filter: blur(8px); padding: 10px 24px; z-index: 100; border-bottom: 1px solid rgba(245, 166, 35, 0.25); }
     .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .nav-logo { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 700; color: #F5A623; letter-spacing: 0.2em; }
-    .nav-logo:hover { text-decoration: none; }
+    .nav-logo { display: inline-flex; align-items: center; }
+    .nav-logo:hover { text-decoration: none; opacity: 0.85; }
+    .nav-logo img { height: 44px; width: auto; border-radius: 6px; display: block; }
     .nav-links { display: none; gap: 24px; list-style: none; }
     .nav-links a { color: #F5E6CC; font-size: 14px; font-weight: 500; }
     .nav-links a:hover { color: #F5A623; text-decoration: none; }
@@ -114,6 +117,7 @@
     .signup .benefits li:before { content: "✓ "; color: #F5A623; margin-right: 4px; font-weight: 700; }
 
     .about { background: #F5EFE5; }
+    .about-logo { display: block; margin: 0 auto 32px; max-width: 280px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 26, 14, 0.08); }
     .about-body { max-width: 560px; margin: 0 auto; font-size: 15px; line-height: 2; color: #3D2817; background: #FFFFFF; padding: 36px 32px; border-radius: 12px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); }
     .about-body p { margin-bottom: 20px; }
     .about-body p:last-of-type { margin-bottom: 0; }
@@ -143,9 +147,11 @@
       h2 { font-size: 32px; }
       section { padding: 100px 0; }
       .nav-links { display: flex; }
+      .nav-logo img { height: 52px; }
       .product-grid { grid-template-columns: 1fr 1fr; }
       .feature-banner { padding: 140px 24px; background-attachment: fixed; }
       .feature-banner-quote { font-size: 32px; }
+      .about-logo { max-width: 360px; margin-bottom: 48px; }
     }
   </style>
 </head>
@@ -173,7 +179,9 @@
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="#top" class="nav-logo">mycomise</a>
+      <a href="#top" class="nav-logo">
+        <img src="mycomiselogo.jpg" alt="mycomise">
+      </a>
       <ul class="nav-links">
         <li><a href="#pain">課題</a></li>
         <li><a href="#products">サービス</a></li>
@@ -301,6 +309,7 @@
 
   <section class="about" id="about">
     <div class="container-narrow">
+      <img src="mycomiselogo.jpg" alt="mycomise ロゴ" class="about-logo">
       <h2>はじめまして</h2>
       <div class="about-body">
         <p>はじめまして、mycomiseです。</p>
