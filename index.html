@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mycomise — 小さなお店の、もうひとつの手。</title>
-  <meta name="description" content="個人店・小規模飲食店のためのシンプルなツール。発注表、シフト希望集約など、月1,980円から。">
+  <meta name="description" content="個人店・小規模飲食店のためのシンプルなツール。発注表ベータ版を月300円で公開中。">
   <meta property="og:title" content="mycomise — 小さなお店の、もうひとつの手。">
-  <meta property="og:description" content="個人店・小規模飲食店のためのシンプルなツール。月1,980円から。">
+  <meta property="og:description" content="個人店・小規模飲食店のためのシンプルなツール。発注表ベータ版を月300円で公開中。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mycomise.com">
   <meta property="og:image" content="https://mycomise.com/mycomiselogo.jpg">
@@ -57,8 +57,11 @@
     .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.3em; color: #F5A623; margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(245, 166, 35, 0.4); border-radius: 20px; background: rgba(0,0,0,0.35); backdrop-filter: blur(4px); }
     .hero h1 { font-family: 'Noto Serif JP', serif; font-size: 40px; font-weight: 900; line-height: 1.5; margin-bottom: 24px; color: #FFFFFF; letter-spacing: 0.02em; text-shadow: 0 2px 16px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.6); }
     .hero .sub { color: #F0E0C2; font-size: 16px; margin-bottom: 36px; line-height: 1.9; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    .hero-cta-row { display: flex; flex-direction: column; gap: 12px; align-items: center; }
     .cta-button { display: inline-block; padding: 16px 32px; background: #F5A623; color: #2D1A0E; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 20px rgba(245, 166, 35, 0.45); }
     .cta-button:hover { background: #E89510; text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245, 166, 35, 0.55); }
+    .cta-button-secondary { display: inline-block; padding: 14px 28px; background: rgba(245, 230, 204, 0.95); color: #2D1A0E; border: 2px solid #F5A623; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+    .cta-button-secondary:hover { background: #FFFFFF; text-decoration: none; transform: translateY(-2px); }
     .cta-note { font-size: 12px; color: #D4B896; margin-top: 20px; line-height: 1.7; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 36px; }
     .chip { background: rgba(45, 26, 14, 0.55); border: 1px solid rgba(245, 166, 35, 0.5); color: #FFFFFF; padding: 9px 16px; border-radius: 24px; font-size: 13px; font-weight: 500; backdrop-filter: blur(6px); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
@@ -90,14 +93,23 @@
     .products { background: #F5EFE5; }
     .products .lead { text-align: center; font-size: 15px; color: #4A3828; margin-bottom: 48px; line-height: 1.8; }
     .product-grid { display: grid; gap: 20px; max-width: 720px; margin: 0 auto; }
-    .product-card { background: #FFFFFF; border-radius: 12px; padding: 32px 28px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); transition: all 0.2s; position: relative; overflow: hidden; }
+    .product-card { background: #FFFFFF; border-radius: 12px; padding: 32px 28px; border: 1px solid #E5DDD0; box-shadow: 0 2px 8px rgba(45, 26, 14, 0.04); transition: all 0.2s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
     .product-card::before { content: ""; position: absolute; top: 0; left: 0; height: 4px; width: 100%; background: linear-gradient(90deg, #F5A623, #C97A1B); }
     .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45, 26, 14, 0.08); }
     .product-card .icon { font-size: 36px; margin-bottom: 16px; }
-    .product-card h3 { font-family: 'Noto Serif JP', serif; font-size: 22px; margin-bottom: 12px; color: #2D1A0E; }
+    .product-card h3 { font-family: 'Noto Serif JP', serif; font-size: 22px; margin-bottom: 12px; color: #2D1A0E; display: flex; align-items: center; gap: 10px; }
     .product-card p { font-size: 14px; color: #5A4838; margin-bottom: 16px; line-height: 1.8; }
+    .product-card .price-box { background: #FFF8E8; border: 1px dashed #F5A623; padding: 14px 16px; border-radius: 8px; margin-bottom: 16px; }
+    .product-card .price-main { font-size: 20px; color: #C97A1B; font-weight: 700; font-family: 'Noto Serif JP', serif; margin-bottom: 4px; }
+    .product-card .price-sub { font-size: 12px; color: #8A7560; line-height: 1.6; }
     .product-card .price { font-size: 14px; color: #C97A1B; font-weight: 500; margin-bottom: 12px; }
-    .product-card .status { display: inline-block; font-size: 12px; padding: 4px 12px; border-radius: 20px; background: #FFF4E0; color: #C97A1B; font-weight: 500; }
+    .product-card .status { display: inline-block; font-size: 12px; padding: 4px 12px; border-radius: 20px; background: #FFF4E0; color: #C97A1B; font-weight: 500; margin-bottom: 12px; }
+    .product-card .card-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    .product-card .btn-primary { display: block; padding: 12px 20px; background: #F5A623; color: #2D1A0E; text-align: center; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .product-card .btn-primary:hover { background: #E89510; text-decoration: none; transform: translateY(-1px); }
+    .product-card .btn-secondary { display: block; padding: 11px 20px; background: transparent; color: #C97A1B; text-align: center; border: 1px solid #C97A1B; border-radius: 8px; font-weight: 500; font-size: 13px; text-decoration: none; }
+    .product-card .btn-secondary:hover { background: #FFF4E0; text-decoration: none; }
+    .beta-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; background: linear-gradient(135deg, #F5A623, #E74C3C); color: #FFFFFF; border-radius: 20px; letter-spacing: 0.15em; vertical-align: middle; box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3); }
 
     .roadmap { background: #FAF7F2; }
     .roadmap-list { list-style: none; max-width: 540px; margin: 0 auto; position: relative; }
@@ -143,6 +155,7 @@
       .hero-text { text-align: left; flex: 1; }
       .hero h1 { font-size: 52px; }
       .hero .sub { font-size: 18px; }
+      .hero-cta-row { flex-direction: row; align-items: center; }
       .chips { justify-content: flex-start; }
       h2 { font-size: 32px; }
       section { padding: 100px 0; }
@@ -188,7 +201,7 @@
         <li><a href="#roadmap">予定</a></li>
         <li><a href="#about">運営者</a></li>
       </ul>
-      <a href="#signup" class="nav-cta">先行案内</a>
+      <a href="v5.html" class="nav-cta">β版を試す</a>
     </div>
   </nav>
 
@@ -203,13 +216,16 @@
         <div class="hero-text">
           <span class="hero-tag">FOR SMALL RESTAURANTS</span>
           <h1>小さなお店の、<br>もうひとつの手。</h1>
-          <p class="sub">個人店のためのシンプルなツール。<br>発注表から、はじまります。</p>
-          <a href="#signup" class="cta-button">先行案内を受け取る</a>
-          <p class="cta-note">リリース時に最初にお知らせします。<br>登録は無料・解除はいつでも可能です。</p>
+          <p class="sub">個人店のためのシンプルなツール。<br>発注表ベータ版、公開中。</p>
+          <div class="hero-cta-row">
+            <a href="v5.html" class="cta-button">β版を試す（月300円）</a>
+            <a href="#signup" class="cta-button-secondary">先行案内に登録</a>
+          </div>
+          <p class="cta-note">ベータ参加者は正規版リリース後も<strong>月300円のまま</strong>継続できます。<br>新規ユーザーは正規版 月600円〜。</p>
           <div class="chips">
             <span class="chip">📝 発注が<strong>ラク</strong>に</span>
             <span class="chip">⏱ <strong>時短</strong>になる</span>
-            <span class="chip">💴 月 <strong>1,980円〜</strong></span>
+            <span class="chip">💴 月 <strong>300円〜</strong></span>
           </div>
         </div>
         <div class="mockup-wrap">
@@ -259,20 +275,35 @@
       <h2>これから作るもの</h2>
       <p class="lead">mycomiseは、個人店・小規模飲食店のための<br>シンプルなツール群です。</p>
       <div class="product-grid">
+
         <div class="product-card">
           <div class="icon">📋</div>
-          <h3>発注表</h3>
-          <p>業者ごとの定型注文をスマホでサクッと送信。FAX・LINE・メールに対応予定。</p>
-          <div class="price">月 1,980円(税込)・7日間無料</div>
-          <span class="status">🚧 開発中・近日リリース</span>
+          <h3>発注表 <span class="beta-badge">BETA</span></h3>
+          <p>業者ごとの定型注文をスマホでサクッと送信。LINE・FAX・メールに対応予定。スマホのホーム画面に追加してアプリのように使えます。</p>
+          <div class="price-box">
+            <div class="price-main">月 300円（税込）</div>
+            <div class="price-sub">
+              ベータ参加者特別価格<br>
+              正規版リリース後も <strong>月300円のまま</strong> 継続OK<br>
+              （新規ユーザーは正規版 月600円〜）
+            </div>
+          </div>
+          <div class="card-actions">
+            <a href="v5.html" class="btn-primary">β版を試す →</a>
+          </div>
         </div>
+
         <div class="product-card">
           <div class="icon">📅</div>
           <h3>シフト希望集約</h3>
           <p>スタッフからの希望をLINE経由で集めて、自動で1枚の表に。</p>
-          <div class="price">月 1,980円・セット割 2,980円</div>
+          <div class="price-box">
+            <div class="price-main">月 1,980円・セット割 2,980円</div>
+            <div class="price-sub">予定価格</div>
+          </div>
           <span class="status">🛠 次に開発予定</span>
         </div>
+
       </div>
     </div>
   </section>
@@ -282,7 +313,7 @@
       <h2>リリース予定</h2>
       <ul class="roadmap-list">
         <li><span class="status-icon">✓</span>構想・ブランド立ち上げ<span class="date">完了</span></li>
-        <li><span class="status-icon">⚒</span>発注表アプリ<span class="date">2026年 夏ごろ</span></li>
+        <li><span class="status-icon">β</span>発注表アプリ ベータ版公開中<span class="date">2026年 6月〜</span></li>
         <li><span class="status-icon">→</span>シフト希望集約<span class="date">2026年 秋ごろ</span></li>
         <li><span class="status-icon">?</span>棚卸しアプリ<span class="date">検討中</span></li>
       </ul>
@@ -292,8 +323,8 @@
 
   <section id="signup" class="signup">
     <div class="container-narrow">
-      <h2>リリース時に<br>最初に知らせてほしい方へ</h2>
-      <p class="lead">リリースのお知らせのほか、<br>開発の進捗、こだわりポイントなど<br>月1〜2回のペースで配信します。</p>
+      <h2>新サービスのお知らせを<br>受け取りたい方へ</h2>
+      <p class="lead">シフト希望集約など、<br>次のツールのリリース情報を<br>月1〜2回のペースでお届けします。</p>
       <div class="signup-form-wrap">
         <iframe data-tally-src="https://tally.so/embed/Ekv96o?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="mycomise リリース通知"></iframe>
         <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
@@ -315,7 +346,7 @@
         <p>はじめまして、mycomiseです。</p>
         <p>個人店や小さな飲食店で働く人たちが、「大手のシステムは合わないけど、毎日のちょっとした手間は減らしたい」と感じている話をよく聞きます。</p>
         <p>そんな声に応える、ちょうどいいサイズの道具を作りたい。それがmycomiseを始めた理由です。</p>
-        <p>リリースまでもう少しお待ちください。お知らせを楽しみにお待ちいただけたら嬉しいです。</p>
+        <p>第1弾の「発注表」をベータ版として公開しました。実際に使ってみて、率直なフィードバックをいただけたら嬉しいです。</p>
         <p class="signature">— mycomise</p>
       </div>
     </div>
