@@ -1,19 +1,16 @@
 // Vercel Serverless Function: /api/stripe-webhook
 // Stripeの決済完了(checkout.session.completed)を受け取り、
-// アクセスコードを発行してVercel KVに保存し、購入者にメールで送信する。
+// アクセスコードを発行してRedisに保存し、購入者にメールで送信する。
 //
 // 必要な環境変数（Vercelプロジェクトの Settings > Environment Variables で設定）:
 //   STRIPE_SECRET_KEY       … Stripeダッシュボードの秘密鍵 (sk_live_... / sk_test_...)
 //   STRIPE_WEBHOOK_SECRET   … StripeのWebhookエンドポイント作成時に発行される署名シークレット (whsec_...)
 //   RESEND_API_KEY          … Resendダッシュボードで発行したAPIキー
 //   MAIL_FROM               … 送信元メールアドレス（Resendで検証済みのドメインが必要。例: noreply@mycomise.com）
-//
-// 必要なVercel連携:
-//   Vercel KV をこのプロジェクトに接続（Storage タブ → Create Database → KV）
-//   接続すると自動で KV_REST_API_URL / KV_REST_API_TOKEN 等の環境変数が追加される
+//   REDIS_URL               … Upstash Redis接続文字列（プロジェクトに接続すると自動で追加される）
 
 import Stripe from 'stripe';
-import { kv } from '@vercel/kv';
+import { getRedis } from '../lib/redis.js';
 
 export const config = {
   api: {
@@ -95,13 +92,14 @@ export default async function handler(req, res) {
 
     const code = generateCode();
 
-    // KVに保存: code -> { email, active, createdAt }
-    await kv.set(`code:${code}`, {
+    // Redisに保存: code -> { email, active, createdAt }（JSON文字列で保存）
+    const redis = getRedis();
+    await redis.set(`code:${code}`, JSON.stringify({
       email,
       active: true,
       stripeSessionId: session.id,
       createdAt: Date.now(),
-    });
+    }));
 
     try {
       await sendCodeEmail(email, code);
