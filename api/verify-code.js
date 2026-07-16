@@ -2,7 +2,7 @@
 // アプリ(v5.html)からコード照合のために呼び出される。
 // POST { code: "XXXX-XXXX" } を受け取り、有効なら { valid: true } を返す。
 
-import { kv } from '@vercel/kv';
+import { getRedis } from '../lib/redis.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -15,7 +15,9 @@ export default async function handler(req, res) {
   }
 
   const normalized = code.trim().toUpperCase();
-  const record = await kv.get(`code:${normalized}`);
+  const redis = getRedis();
+  const raw = await redis.get(`code:${normalized}`);
+  const record = raw ? JSON.parse(raw) : null;
 
   if (!record || record.active !== true) {
     return res.status(200).json({ valid: false });
