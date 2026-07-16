@@ -1,0 +1,10 @@
+{
+  "name": "mycomise-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "ioredis": "^5.4.1",
+    "stripe": "^16.0.0"
+  }
+}
