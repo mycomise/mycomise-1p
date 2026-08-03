@@ -129,19 +129,23 @@
 <div class="sheet" id="sheet"></div>
 
 <script>
+  // デモ版から来た場合（?demo=1）は demo_ 付きの保存キーを読む
+  const isDemo = new URLSearchParams(location.search).get('demo') === '1';
+  const LS_PREFIX = isDemo ? 'demo_' : '';
+
   // アプリと同じ品目名を読み込む（未設定ならデフォルト）
   const defaultBaseNames = ['ねぎま','むね','ぼんじり','せせり','ハツ','レバー','とり皮','砂肝','ささみ'];
 
   function getItemNames() {
     let base;
     try {
-      const raw = JSON.parse(localStorage.getItem('yakitori_base_item_defs') || 'null');
+      const raw = JSON.parse(localStorage.getItem(LS_PREFIX + 'yakitori_base_item_defs') || 'null');
       base = raw && raw.length ? raw.map((d, i) => d.name || defaultBaseNames[i]) : defaultBaseNames.slice();
     } catch (e) { base = defaultBaseNames.slice(); }
 
     let custom = [];
     try {
-      const raw = JSON.parse(localStorage.getItem('yakitori_custom_items') || '[]');
+      const raw = JSON.parse(localStorage.getItem(LS_PREFIX + 'yakitori_custom_items') || '[]');
       custom = raw.map(d => (d.name || '').trim()).filter(n => n);
     } catch (e) { custom = []; }
 
@@ -171,10 +175,10 @@
   const sheet = document.getElementById('sheet');
   sheet.innerHTML = Array.from({ length: 9 }, () => buildForm(names)).join('');
 
-  // デモから来た場合は「デモに戻る」に切り替え
+  // デモから来た場合は「デモに戻る」に切り替え（?demo=1 を優先。referrer は補助）
   (function(){
     var ref = document.referrer || '';
-    if (ref.indexOf('demo.html') !== -1) {
+    if (isDemo || ref.indexOf('demo.html') !== -1) {
       var a = document.getElementById('backToApp');
       if (a) { a.setAttribute('href', './demo.html'); a.textContent = '← デモに戻る'; }
     }

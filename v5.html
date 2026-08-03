@@ -943,6 +943,11 @@
     <input type="text" id="accessCodeInput" placeholder="例: 7F3K-9QRT" style="width:100%;padding:12px;font-size:1.1rem;text-align:center;letter-spacing:2px;border-radius:8px;border:1px solid #555;background:#1a1a1a;color:#f0e6d3;outline:none;text-transform:uppercase;">
     <button id="accessCodeBtn" onclick="submitAccessCode()" style="width:100%;margin-top:14px;padding:12px;font-size:1rem;font-weight:700;border:none;border-radius:8px;background:#f5c842;color:#1a1a1a;cursor:pointer;">確認</button>
     <div id="accessCodeError" style="color:#e06060;font-size:0.82rem;margin-top:10px;min-height:1.2em;"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid #3a3a3a;font-size:0.78rem;color:#aaa;">
+      <div style="margin-bottom:8px;">アクセスコードをお持ちでない方へ</div>
+      <a href="demo.html" style="display:block;color:#f5c842;text-decoration:none;padding:4px 0;">▶ 体験版を試す（コード不要）</a>
+      <a href="https://buy.stripe.com/9B6cN45Q7aGg51B1ZecAo00" style="display:block;color:#f5c842;text-decoration:none;padding:4px 0;">▶ 購入して本番版を使う</a>
+    </div>
   </div>
 </div>
 
@@ -2210,20 +2215,134 @@
         }
       });
 
-      const numbers = extractNumbers(text);
-      renderOCRRows(numbers);
-      document.getElementById('ocrStatus').textContent =
-        numbers.length > 0
-          ? '数字を確認して「この内容で入力」をタップしてください'
-          : '数字を認識できませんでした。手動で入力してください';
+      const result = readSheet(text);
+      renderOCRRows(result.values);
+      document.getElementById('ocrStatus').textContent = ocrStatusText(result);
     } catch (e) {
       document.getElementById('ocrStatus').textContent = '読み取りに失敗しました。手動で入力してください';
       renderOCRRows([]);
     }
   }
 
+  function ocrStatusText(result) {
+    if (result.fallback) {
+      return '品目名を読み取れなかったため、上から順に当てはめました。行がずれている場合があるので、全ての行を確認してください';
+    }
+    if (result.matched === 0) return '数字を認識できませんでした。手動で入力してください';
+    const rest = result.total - result.matched;
+    return rest > 0
+      ? `${result.total}品目中${result.matched}品目を読み取りました。残り${rest}品目は空欄です。手で入力してください`
+      : `${result.total}品目中${result.matched}品目を読み取りました。数字を確認して「この内容で入力」をタップしてください`;
+  }
+
+  // 全角・空白・絵文字を落として突き合わせやすくする
+  function normalizeOCRLine(s) {
+    return String(s == null ? '' : s).normalize('NFKC').replace(/[^\p{L}\p{N}]/gu, '');
+  }
+
+  function editDistance(a, b) {
+    const dp = [];
+    for (let j = 0; j <= b.length; j++) dp[j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      let prev = dp[0];
+      dp[0] = i;
+      for (let j = 1; j <= b.length; j++) {
+        const cur = dp[j];
+        dp[j] = Math.min(dp[j] + 1, dp[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+        prev = cur;
+      }
+    }
+    return dp[b.length];
+  }
+
+  // 品目名が行のどこに写っているかを返す。score 2=そのまま一致 / 1=1文字までの誤認識
+  function findName(name, line) {
+    if (!name || !line) return null;
+    const i = line.indexOf(name);
+    if (i !== -1) return { score: 2, end: i + name.length };
+    // 2文字以下の名前は他の品目に紛れ込みやすいので曖昧一致させない
+    if (name.length < 3) return null;
+    const lens = [name.length, name.length - 1, name.length + 1];
+    for (const len of lens) {
+      if (len < 1) continue;
+      for (let s = 0; s + len <= line.length; s++) {
+        const w = line.slice(s, s + len);
+        if (/\d/.test(w)) continue;  // 記入された数字を名前の一部と取り違えない
+        if (editDistance(name, w) <= 1) return { score: 1, end: s + len };
+      }
+    }
+    return null;
+  }
+
+  // 名前より後ろにある数字を拾う（用紙は名前の右が記入欄）
+  function pickNumber(line, from) {
+    const m = line.slice(from).match(/\d+/);
+    if (!m) return null;
+    const n = parseInt(m[0], 10);
+    return n <= 9999 ? n : null;
+  }
+
+  // 品目名を手がかりに残数を読む。名前が見つからない品目は空欄のまま（行ずれを起こさない）
+  function readSheet(text) {
+    const lines = String(text == null ? '' : text).split('\n').map(normalizeOCRLine);
+    const targets = [];
+    items.forEach((it, idx) => {
+      const name = normalizeOCRLine(it.name);
+      if (name) targets.push({ idx, name });
+    });
+
+    const cands = [];
+    targets.forEach(t => {
+      lines.forEach((line, li) => {
+        const hit = findName(t.name, line);
+        if (hit) cands.push({ idx: t.idx, li, score: hit.score, end: hit.end, len: t.name.length });
+      });
+    });
+    // 確かな一致から、長い名前を優先して割り当てる（「むね」が「とりむね」の行を取らないように）
+    cands.sort((a, b) => b.score - a.score || b.len - a.len);
+
+    const isNameLine = lines.map((line, li) => cands.some(c => c.li === li));
+    const values = items.map(() => null);
+    const doneItem = items.map(() => false);
+    const doneLine = lines.map(() => false);
+    let matched = 0;
+
+    cands.forEach(c => {
+      if (doneItem[c.idx] || doneLine[c.li]) return;
+      // 同じ行を同じ確からしさで複数の品目が取り合うときは、取り違えを避けて捨てる
+      const rival = cands.some(o => o.li === c.li && o.idx !== c.idx && o.score === c.score && o.len === c.len && !doneItem[o.idx]);
+      if (rival) { doneLine[c.li] = true; return; }
+      doneItem[c.idx] = true;
+      doneLine[c.li] = true;
+      let n = pickNumber(lines[c.li], c.end);
+      if (n === null) {
+        // 数字が次の行に落ちることがあるので、数字だけの行なら拾う
+        for (let j = c.li + 1; j < lines.length; j++) {
+          if (!lines[j]) continue;
+          if (doneLine[j] || isNameLine[j]) break;
+          if (/\d/.test(lines[j]) && lines[j].replace(/\d/g, '').length <= 1) {
+            n = pickNumber(lines[j], 0);
+            if (n !== null) doneLine[j] = true;
+          }
+          break;
+        }
+      }
+      if (n !== null) { values[c.idx] = n; matched++; }
+    });
+
+    if (matched === 0) {
+      // 品目名が1つも読めなかった時だけ、従来どおり上から順に当てはめる
+      const nums = extractNumbers(text);
+      if (nums.length > 0) {
+        nums.forEach((n, i) => { values[i] = n; });
+        return { values, matched: 0, total: targets.length, fallback: true };
+      }
+    }
+    return { values, matched, total: targets.length, fallback: false };
+  }
+
   function extractNumbers(text) {
-    // 行ごとに最初の数字を抽出
+    // 行ごとに最初の数字を抽出（品目名が全く読めなかった時の保険）
     return text.split('\n')
       .map(line => { const m = line.match(/\d+/); return m ? parseInt(m[0]) : null; })
       .filter(n => n !== null && n >= 0 && n <= 9999)
@@ -2275,15 +2394,39 @@
 <script>
   // ---- アクセスコード ゲート ----
   const ACCESS_STORAGE_KEY = 'yakitori_access_code';
+  const ACCESS_VERIFIED_AT_KEY = 'yakitori_access_verified_at';
+  // サーバーに確認できない状態でも使える猶予期間（7日）
+  const OFFLINE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;
+
+  function markVerified() {
+    localStorage.setItem(ACCESS_VERIFIED_AT_KEY, String(Date.now()));
+  }
+
+  // コードと確認時刻がずれないよう、消すときは必ず両方まとめて消す
+  function clearAccess() {
+    localStorage.removeItem(ACCESS_STORAGE_KEY);
+    localStorage.removeItem(ACCESS_VERIFIED_AT_KEY);
+  }
+
+  function isWithinOfflineGrace() {
+    const raw = localStorage.getItem(ACCESS_VERIFIED_AT_KEY);
+    if (!raw) return false;
+    const verifiedAt = Number(raw);
+    if (!Number.isFinite(verifiedAt) || verifiedAt <= 0) return false;
+    const elapsed = Date.now() - verifiedAt;
+    if (elapsed < 0) return false; // 端末の時計が進められている
+    return elapsed <= OFFLINE_GRACE_MS;
+  }
 
   function showApp() {
     document.getElementById('accessGate').style.display = 'none';
     document.getElementById('appRoot').style.display = 'block';
   }
 
-  function showGate() {
+  function showGate(message) {
     document.getElementById('appRoot').style.display = 'none';
     document.getElementById('accessGate').style.display = 'flex';
+    document.getElementById('accessCodeError').textContent = message || '';
     document.getElementById('accessCodeInput').focus();
   }
 
@@ -2305,15 +2448,18 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),
       });
+      // サーバーエラーはコードが無効という意味ではないので、通信エラーとして扱う
+      if (!res.ok) throw new Error(`verify-code failed: ${res.status}`);
       const data = await res.json();
       if (data.valid) {
         localStorage.setItem(ACCESS_STORAGE_KEY, code);
+        markVerified();
         showApp();
       } else {
         errEl.textContent = 'コードが正しくありません。ご確認の上、再度入力してください。';
       }
     } catch (e) {
-      errEl.textContent = '通信エラーが発生しました。時間をおいて再度お試しください。';
+      errEl.textContent = 'コードを確認できませんでした。通信状態をご確認の上、時間をおいて再度お試しください。';
     } finally {
       btn.disabled = false;
       btn.textContent = '確認';
@@ -2334,12 +2480,21 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: saved }),
       });
+      // サーバーエラーはコードが無効という意味ではないので、猶予期間の判定へ回す
+      if (!res.ok) throw new Error(`verify-code failed: ${res.status}`);
       const data = await res.json();
-      if (data.valid) showApp();
-      else { localStorage.removeItem(ACCESS_STORAGE_KEY); showGate(); }
+      if (data.valid) {
+        markVerified();
+        showApp();
+      } else {
+        clearAccess();
+        showGate();
+      }
     } catch (e) {
-      // オフライン等で確認できない場合は、以前有効だったコードなのでそのまま使わせる
-      showApp();
+      // サーバーに確認できないときだけ猶予期間で判定する。
+      // ここで確認時刻を更新すると猶予が無限に延びてしまうので、更新しない。
+      if (isWithinOfflineGrace()) showApp();
+      else showGate('アクセスコードの再確認が必要です。インターネットに接続した状態で、もう一度コードを入力してください。');
     }
   })();
 </script>

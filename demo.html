@@ -938,7 +938,8 @@
 <!-- デモ版バナー -->
 <div style="background:#e07020;color:#fff;text-align:center;padding:8px 12px;font-size:0.85rem;font-weight:700;line-height:1.5;">
   🍢 これはデモ版です（無料でお試しいただけます）<br>
-  <a href="https://buy.stripe.com/9B6cN45Q7aGg51B1ZecAo00" style="display:inline-block;margin-top:6px;background:#fff;color:#e07020;text-decoration:none;padding:5px 16px;border-radius:6px;font-size:0.82rem;">▶ 購入して本番版を使う</a>
+  <a href="https://buy.stripe.com/9B6cN45Q7aGg51B1ZecAo00" style="display:inline-block;margin-top:6px;background:#fff;color:#e07020;text-decoration:none;padding:5px 16px;border-radius:6px;font-size:0.82rem;">▶ 購入して本番版を使う</a><br>
+  <a href="./v5.html" style="display:inline-block;margin-top:6px;color:#ffe8d5;text-decoration:underline;font-size:0.75rem;font-weight:400;">本番版をお持ちの方はこちら</a>
 </div>
 
 <div id="appRoot" style="display:block;">
@@ -948,7 +949,7 @@
   <button id="themeToggleBtn" onclick="toggleTheme()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;padding:4px 8px;">🌙</button>
 </div>
 <a class="manual-link" href="./manual.html">📖 取扱説明書を見る</a>
-<a class="manual-link" href="./print.html">🖨️ 焼き鳥 記録用紙を印刷</a>
+<a class="manual-link" href="./print.html?demo=1">🖨️ 焼き鳥 記録用紙を印刷</a>
 
 <!-- 店舗名 -->
 <div class="store-name-bar">
@@ -1164,9 +1165,17 @@
 <div class="toast" id="toast">保存しました</div>
 
 <script>
+  // デモ版は本番アプリと同じオリジンで動くため、保存キーを demo_ で分離する
+  const LS_PREFIX = 'demo_';
+  const demoStorage = {
+    getItem(key)        { return localStorage.getItem(LS_PREFIX + key); },
+    setItem(key, value) { localStorage.setItem(LS_PREFIX + key, value); },
+    removeItem(key)     { localStorage.removeItem(LS_PREFIX + key); },
+  };
+
   // テーマ初期化（関数定義より先に実行するため body クラスだけ先に設定）
   (function(){
-    const t = localStorage.getItem('yakitori_theme');
+    const t = demoStorage.getItem('yakitori_theme');
     if(t === 'light') document.body.classList.add('light');
   })();
 
@@ -1179,16 +1188,16 @@
 
   function toggleTheme() {
     document.body.classList.toggle('light');
-    localStorage.setItem('yakitori_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    demoStorage.setItem('yakitori_theme', document.body.classList.contains('light') ? 'light' : 'dark');
     updateThemeBtn();
   }
 
   // カスタム品目（名称・目安を自由記入）
-  let customItemDefs = JSON.parse(localStorage.getItem('yakitori_custom_items') || '[{"name":"","target":15,"course":false},{"name":"","target":15,"course":false}]');
+  let customItemDefs = JSON.parse(demoStorage.getItem('yakitori_custom_items') || '[{"name":"","target":15,"course":false},{"name":"","target":15,"course":false}]');
   customItemDefs = customItemDefs.map(d => ({ course: false, ...d }));
 
   function saveCustomItemDefs() {
-    localStorage.setItem('yakitori_custom_items', JSON.stringify(customItemDefs));
+    demoStorage.setItem('yakitori_custom_items', JSON.stringify(customItemDefs));
   }
 
   // 全品目の名称・目安を編集可能にする（デフォルト値あり）
@@ -1204,13 +1213,13 @@
     { name: 'ささみ',   icon: '🍢', target: 30, course: true  },
   ];
 
-  let baseItemDefs = JSON.parse(localStorage.getItem('yakitori_base_item_defs') ||
+  let baseItemDefs = JSON.parse(demoStorage.getItem('yakitori_base_item_defs') ||
     JSON.stringify(defaultBaseItems.map(it => ({ name: it.name, target: it.target, course: it.course }))));
   // 既存データに course が無い場合は defaultBaseItems の値で補完
   baseItemDefs = baseItemDefs.map((d, i) => ({ course: defaultBaseItems[i].course, ...d }));
 
   function saveBaseItemDefs() {
-    localStorage.setItem('yakitori_base_item_defs', JSON.stringify(baseItemDefs));
+    demoStorage.setItem('yakitori_base_item_defs', JSON.stringify(baseItemDefs));
   }
 
   const baseItems = defaultBaseItems; // 固定プロパティ（icon, course, fixedDeliveryPerDay）用
@@ -1295,12 +1304,12 @@
   function storageKey(dateStr) { return `yakitori_${dateStr}`; }
 
   function loadDate(dateStr) {
-    const raw = localStorage.getItem(storageKey(dateStr));
+    const raw = demoStorage.getItem(storageKey(dateStr));
     return raw ? JSON.parse(raw) : null;
   }
 
   function saveDate(dateStr, data) {
-    localStorage.setItem(storageKey(dateStr), JSON.stringify(data));
+    demoStorage.setItem(storageKey(dateStr), JSON.stringify(data));
   }
 
   function getCurrentData() {
@@ -1378,7 +1387,7 @@
       const mm = d.getMonth() + 1;
       const dd = d.getDate();
 
-      const hasData = !!localStorage.getItem(storageKey(dateStr));
+      const hasData = !!demoStorage.getItem(storageKey(dateStr));
       const isActive = dateStr === currentDate;
       const isToday  = dateStr === today;
 
@@ -1570,14 +1579,14 @@
 
   function clearDay() {
     if (!confirm(`${formatLabel(currentDate)} のデータをリセットしますか？`)) return;
-    localStorage.removeItem(storageKey(currentDate));
+    demoStorage.removeItem(storageKey(currentDate));
     buildDayTabs();
     renderTable();
   }
 
   // ---- 店舗名 ----
   function loadStoreName() {
-    const name = localStorage.getItem('yakitori_store_name') || '';
+    const name = demoStorage.getItem('yakitori_store_name') || '';
     const disp = document.getElementById('storeNameDisplay');
     if (name) {
       disp.textContent = name;
@@ -1588,7 +1597,7 @@
     }
   }
   function startEditStoreName() {
-    const name = localStorage.getItem('yakitori_store_name') || '';
+    const name = demoStorage.getItem('yakitori_store_name') || '';
     const input = document.getElementById('storeNameInput');
     input.value = name;
     document.getElementById('storeNameDisplay').style.display = 'none';
@@ -1597,7 +1606,7 @@
   }
   function saveStoreName() {
     const val = document.getElementById('storeNameInput').value.trim();
-    localStorage.setItem('yakitori_store_name', val);
+    demoStorage.setItem('yakitori_store_name', val);
     document.getElementById('storeNameInput').style.display = 'none';
     document.getElementById('storeNameDisplay').style.display = '';
     loadStoreName();
@@ -1634,9 +1643,9 @@
   // ---- カレンダー ----
   // planData[dateStr] = { orderDays: 0|1|2|3, storeHoliday: bool, supplierHoliday: bool }
   // orderDays: 0=発注なし, 1=1日分(デフォルト), 2=2日分, 3=3日分
-  let planData = JSON.parse(localStorage.getItem('yakitori_cal_plan') || '{}');
+  let planData = JSON.parse(demoStorage.getItem('yakitori_cal_plan') || '{}');
   function savePlanData() {
-    localStorage.setItem('yakitori_cal_plan', JSON.stringify(planData));
+    demoStorage.setItem('yakitori_cal_plan', JSON.stringify(planData));
   }
   function getPlan(dateStr) {
     return planData[dateStr] || { orderDays: 1, storeHoliday: false, supplierHoliday: false };
@@ -1863,13 +1872,13 @@
   }
 
   // ---- 原料発注ページ（1ページ目と同仕様・10品目） ----
-  let rawItemDefs = JSON.parse(localStorage.getItem('yakitori_raw_item_defs') ||
+  let rawItemDefs = JSON.parse(demoStorage.getItem('yakitori_raw_item_defs') ||
     JSON.stringify(Array.from({length:10}, () => ({name:'', target:10, unit:'本'}))));
   // 既存データにunit/packSizeが無い場合は補完
   rawItemDefs = rawItemDefs.map(d => ({ unit: '本', packSize: 1, ...d }));
 
   function saveRawItemDefs() {
-    localStorage.setItem('yakitori_raw_item_defs', JSON.stringify(rawItemDefs));
+    demoStorage.setItem('yakitori_raw_item_defs', JSON.stringify(rawItemDefs));
   }
 
   function buildRawItems() {
@@ -1882,11 +1891,11 @@
 
   function rawStorageKey(dateStr) { return `yakitori_raw_${dateStr}`; }
   function rawLoadDate(dateStr) {
-    const r = localStorage.getItem(rawStorageKey(dateStr));
+    const r = demoStorage.getItem(rawStorageKey(dateStr));
     return r ? JSON.parse(r) : null;
   }
   function rawSaveDate(dateStr, data) {
-    localStorage.setItem(rawStorageKey(dateStr), JSON.stringify(data));
+    demoStorage.setItem(rawStorageKey(dateStr), JSON.stringify(data));
   }
   function rawGetCurrentData() {
     const remaining = rawItems.map((_, i) => parseInt(document.getElementById(`rrem_${i}`)?.value) || 0);
@@ -2090,7 +2099,7 @@
       const d = new Date(dateStr + 'T00:00:00');
       const wdIdx = d.getDay();
       const isClosed = wdIdx === 0;
-      const hasData = !!localStorage.getItem(rawStorageKey(dateStr));
+      const hasData = !!demoStorage.getItem(rawStorageKey(dateStr));
       const isActive = dateStr === rawCurrentDate;
       const isToday  = dateStr === today;
       let cls = 'day-tab';
@@ -2148,7 +2157,7 @@
   }
   function rawClearDay() {
     if (!confirm(`${formatLabel(rawCurrentDate)} の原料データをリセットしますか？`)) return;
-    localStorage.removeItem(rawStorageKey(rawCurrentDate));
+    demoStorage.removeItem(rawStorageKey(rawCurrentDate));
     rawBuildDayTabs();
     rawRenderTable();
   }
@@ -2205,20 +2214,134 @@
         }
       });
 
-      const numbers = extractNumbers(text);
-      renderOCRRows(numbers);
-      document.getElementById('ocrStatus').textContent =
-        numbers.length > 0
-          ? '数字を確認して「この内容で入力」をタップしてください'
-          : '数字を認識できませんでした。手動で入力してください';
+      const result = readSheet(text);
+      renderOCRRows(result.values);
+      document.getElementById('ocrStatus').textContent = ocrStatusText(result);
     } catch (e) {
       document.getElementById('ocrStatus').textContent = '読み取りに失敗しました。手動で入力してください';
       renderOCRRows([]);
     }
   }
 
+  function ocrStatusText(result) {
+    if (result.fallback) {
+      return '品目名を読み取れなかったため、上から順に当てはめました。行がずれている場合があるので、全ての行を確認してください';
+    }
+    if (result.matched === 0) return '数字を認識できませんでした。手動で入力してください';
+    const rest = result.total - result.matched;
+    return rest > 0
+      ? `${result.total}品目中${result.matched}品目を読み取りました。残り${rest}品目は空欄です。手で入力してください`
+      : `${result.total}品目中${result.matched}品目を読み取りました。数字を確認して「この内容で入力」をタップしてください`;
+  }
+
+  // 全角・空白・絵文字を落として突き合わせやすくする
+  function normalizeOCRLine(s) {
+    return String(s == null ? '' : s).normalize('NFKC').replace(/[^\p{L}\p{N}]/gu, '');
+  }
+
+  function editDistance(a, b) {
+    const dp = [];
+    for (let j = 0; j <= b.length; j++) dp[j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      let prev = dp[0];
+      dp[0] = i;
+      for (let j = 1; j <= b.length; j++) {
+        const cur = dp[j];
+        dp[j] = Math.min(dp[j] + 1, dp[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+        prev = cur;
+      }
+    }
+    return dp[b.length];
+  }
+
+  // 品目名が行のどこに写っているかを返す。score 2=そのまま一致 / 1=1文字までの誤認識
+  function findName(name, line) {
+    if (!name || !line) return null;
+    const i = line.indexOf(name);
+    if (i !== -1) return { score: 2, end: i + name.length };
+    // 2文字以下の名前は他の品目に紛れ込みやすいので曖昧一致させない
+    if (name.length < 3) return null;
+    const lens = [name.length, name.length - 1, name.length + 1];
+    for (const len of lens) {
+      if (len < 1) continue;
+      for (let s = 0; s + len <= line.length; s++) {
+        const w = line.slice(s, s + len);
+        if (/\d/.test(w)) continue;  // 記入された数字を名前の一部と取り違えない
+        if (editDistance(name, w) <= 1) return { score: 1, end: s + len };
+      }
+    }
+    return null;
+  }
+
+  // 名前より後ろにある数字を拾う（用紙は名前の右が記入欄）
+  function pickNumber(line, from) {
+    const m = line.slice(from).match(/\d+/);
+    if (!m) return null;
+    const n = parseInt(m[0], 10);
+    return n <= 9999 ? n : null;
+  }
+
+  // 品目名を手がかりに残数を読む。名前が見つからない品目は空欄のまま（行ずれを起こさない）
+  function readSheet(text) {
+    const lines = String(text == null ? '' : text).split('\n').map(normalizeOCRLine);
+    const targets = [];
+    items.forEach((it, idx) => {
+      const name = normalizeOCRLine(it.name);
+      if (name) targets.push({ idx, name });
+    });
+
+    const cands = [];
+    targets.forEach(t => {
+      lines.forEach((line, li) => {
+        const hit = findName(t.name, line);
+        if (hit) cands.push({ idx: t.idx, li, score: hit.score, end: hit.end, len: t.name.length });
+      });
+    });
+    // 確かな一致から、長い名前を優先して割り当てる（「むね」が「とりむね」の行を取らないように）
+    cands.sort((a, b) => b.score - a.score || b.len - a.len);
+
+    const isNameLine = lines.map((line, li) => cands.some(c => c.li === li));
+    const values = items.map(() => null);
+    const doneItem = items.map(() => false);
+    const doneLine = lines.map(() => false);
+    let matched = 0;
+
+    cands.forEach(c => {
+      if (doneItem[c.idx] || doneLine[c.li]) return;
+      // 同じ行を同じ確からしさで複数の品目が取り合うときは、取り違えを避けて捨てる
+      const rival = cands.some(o => o.li === c.li && o.idx !== c.idx && o.score === c.score && o.len === c.len && !doneItem[o.idx]);
+      if (rival) { doneLine[c.li] = true; return; }
+      doneItem[c.idx] = true;
+      doneLine[c.li] = true;
+      let n = pickNumber(lines[c.li], c.end);
+      if (n === null) {
+        // 数字が次の行に落ちることがあるので、数字だけの行なら拾う
+        for (let j = c.li + 1; j < lines.length; j++) {
+          if (!lines[j]) continue;
+          if (doneLine[j] || isNameLine[j]) break;
+          if (/\d/.test(lines[j]) && lines[j].replace(/\d/g, '').length <= 1) {
+            n = pickNumber(lines[j], 0);
+            if (n !== null) doneLine[j] = true;
+          }
+          break;
+        }
+      }
+      if (n !== null) { values[c.idx] = n; matched++; }
+    });
+
+    if (matched === 0) {
+      // 品目名が1つも読めなかった時だけ、従来どおり上から順に当てはめる
+      const nums = extractNumbers(text);
+      if (nums.length > 0) {
+        nums.forEach((n, i) => { values[i] = n; });
+        return { values, matched: 0, total: targets.length, fallback: true };
+      }
+    }
+    return { values, matched, total: targets.length, fallback: false };
+  }
+
   function extractNumbers(text) {
-    // 行ごとに最初の数字を抽出
+    // 行ごとに最初の数字を抽出（品目名が全く読めなかった時の保険）
     return text.split('\n')
       .map(line => { const m = line.match(/\d+/); return m ? parseInt(m[0]) : null; })
       .filter(n => n !== null && n >= 0 && n <= 9999)
