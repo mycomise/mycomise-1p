@@ -84,6 +84,7 @@ async function sendCodeEmail(toEmail, code) {
         <p style="font-size:24px;font-weight:bold;letter-spacing:2px;">${code}</p>
         <p>アプリURL: <a href="https://mycomise.com/v5.html">https://mycomise.com/v5.html</a></p>
         <p>このコードは大切に保管してください。</p>
+        <p style="font-size:13px;color:#666;">解約をご希望の場合、およびご不明な点は <a href="mailto:mycomise@gmail.com">mycomise@gmail.com</a> までご連絡ください。</p>
       `,
     }),
   });
