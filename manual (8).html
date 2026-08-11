@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>串焼き・焼き鳥 発注表 - 取扱説明書</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a1a;
+      color: #e8e8e8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: #111;
+      border-bottom: 2px solid #f5c842;
+      padding: 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 1.15rem;
+      color: #f5c842;
+      margin-bottom: 4px;
+    }
+    header p {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .app-link {
+      display: block;
+      margin: 16px auto;
+      max-width: 480px;
+      text-align: center;
+      background: #f5c842;
+      color: #111;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .app-link:active { opacity: 0.8; }
+
+    .toc {
+      max-width: 480px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+    }
+    .toc-title {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-bottom: 8px;
+      padding-top: 8px;
+    }
+    .toc a {
+      display: block;
+      color: #f5c842;
+      text-decoration: none;
+      padding: 5px 0;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 0.9rem;
+    }
+    .toc a:last-child { border-bottom: none; }
+
+    section {
+      max-width: 480px;
+      margin: 0 auto 28px;
+      padding: 0 16px;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      color: #f5c842;
+      border-left: 4px solid #f5c842;
+      padding: 6px 10px;
+      background: #1f1f00;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      color: #ffd966;
+      margin: 16px 0 6px;
+    }
+
+    p { margin-bottom: 10px; color: #ccc; }
+
+    ul, ol {
+      margin: 0 0 10px 20px;
+      color: #ccc;
+    }
+    li { margin-bottom: 6px; }
+
+    .card {
+      background: #242424;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border-left: 3px solid #f5c842;
+    }
+    .card-title {
+      font-weight: 700;
+      color: #f5c842;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .card p { margin: 0; font-size: 0.9rem; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    .badge-yaki  { background: #f5c842; color: #111; }
+    .badge-raw   { background: #4a90d9; color: #fff; }
+    .badge-cal   { background: #7db87d; color: #111; }
+
+    .formula-box {
+      background: #1a1a00;
+      border: 1px solid #f5c842;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #f5c842;
+      margin: 10px 0;
+      line-height: 1.8;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #f5c842;
+      color: #111;
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; font-size: 0.9rem; color: #ccc; }
+    .step-body strong { color: #e8e8e8; }
+
+    .tip {
+      background: #1a2a1a;
+      border-left: 3px solid #7db87d;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      color: #b8d8b8;
+      margin: 10px 0;
+    }
+    .tip::before { content: '💡 '; }
+
+    .warn {
+      background: #2a1a1a;
+      border-left: 3px solid #e06060;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      color: #d8b8b8;
+      margin: 10px 0;
+    }
+    .warn::before { content: '⚠️ '; }
+
+    table.ref {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    table.ref th {
+      background: #2a2a2a;
+      color: #f5c842;
+      padding: 6px 10px;
+      text-align: left;
+      font-weight: 700;
+    }
+    table.ref td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #2a2a2a;
+      color: #ccc;
+    }
+    table.ref tr:last-child td { border-bottom: none; }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 8px 0 24px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🍢 串焼き・焼き鳥 発注表</h1>
+  <p>取扱説明書</p>
+</header>
+
+<a class="app-link" id="backToApp" href="./v5.html">▶ アプリを開く</a>
+<script>
+  // デモから来た場合は「デモに戻る」に切り替え（?demo=1 を優先。referrer は補助）
+  (function(){
+    var isDemo = new URLSearchParams(location.search).get('demo') === '1';
+    var ref = document.referrer || '';
+    if (isDemo || ref.indexOf('demo.html') !== -1) {
+      var a = document.getElementById('backToApp');
+      if (a) { a.setAttribute('href', './demo.html'); a.textContent = '▶ デモに戻る'; }
+    }
+  })();
+</script>
+
+<!-- 発注の基本ルール -->
+<section style="max-width:480px;margin:0 auto 16px;padding:0 16px;">
+  <div style="background:#1f1a00;border:2px solid #f5c842;border-radius:12px;padding:16px 18px;">
+    <div style="font-size:0.95rem;font-weight:700;color:#f5c842;margin-bottom:12px;">🍢 発注の基本ルール</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span style="background:#f5c842;color:#111;font-weight:700;font-size:0.72rem;padding:3px 7px;border-radius:10px;white-space:nowrap;margin-top:1px;">発注</span>
+        <span style="color:#e8e0d0;font-size:0.9rem;">当日の営業終了後に注文</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span style="background:#7ec8e3;color:#111;font-weight:700;font-size:0.72rem;padding:3px 7px;border-radius:10px;white-space:nowrap;margin-top:1px;">納品</span>
+        <span style="color:#e8e0d0;font-size:0.9rem;">中1日あけた翌々日に納品</span>
+      </div>
+      <div style="color:#aaa;font-size:0.8rem;border-top:1px solid #3a3000;padding-top:10px;line-height:1.8;">
+        例）<span style="color:#f5c842;">月曜</span>の営業後に発注
+        　→ <span style="color:#7ec8e3;">水曜</span>に納品
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 目次 -->
+<div class="toc">
+  <div class="toc-title">📋 目次</div>
+  <a href="#overview">1. アプリの概要</a>
+  <a href="#tabs">2. 3つのタブ</a>
+  <a href="#yaki">3. 焼き鳥発注ページ</a>
+  <a href="#raw">4. 原料発注ページ</a>
+  <a href="#cal">5. カレンダーページ</a>
+  <a href="#settings">6. 品目設定</a>
+  <a href="#formula">7. 予想数の計算式</a>
+  <a href="#ocr">8. カメラ・写真入力（OCR）</a>
+  <a href="#sheet">9. 記録用紙（印刷）</a>
+  <a href="#theme">10. 画面の色（白・黒）</a>
+  <a href="#tips">11. 使い方のコツ</a>
+  <a href="#support">12. 解約・お問い合わせ</a>
+</div>
+
+<hr class="divider">
+
+<!-- 1. 概要 -->
+<section id="overview">
+  <h2>1. アプリの概要</h2>
+  <p>串焼き・焼き鳥店向けの発注管理アプリです。毎日の残数・在庫をもとに発注数を自動計算し、発注スケジュールをカレンダーで管理できます。</p>
+  <div class="card">
+    <div class="card-title">主な機能</div>
+    <p>✅ 焼き鳥商品の発注数計算<br>
+       ✅ 原料（もも肉・タレなど）の発注管理<br>
+       ✅ 発注スケジュールカレンダー<br>
+       ✅ カメラ／写真から残数をOCR読み取り<br>
+       ✅ データは端末に自動保存（ネット不要）</p>
+  </div>
+  <div class="tip">データはブラウザのローカルに保存されます。端末を変えると引き継がれません。</div>
+</section>
+
+<!-- 2. タブ -->
+<section id="tabs">
+  <h2>2. 3つのタブ</h2>
+  <div class="card">
+    <div class="card-title"><span class="badge badge-yaki">🍢 焼き鳥発注</span></div>
+    <p>串焼き・焼き鳥商品の在庫と発注数を管理します。</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge badge-raw">📦 原料発注</span></div>
+    <p>もも肉・タレなど原料の在庫と発注数を管理します。単位（Kg・本など）を設定できます。</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge badge-cal">📅 カレンダー</span></div>
+    <p>月ごとの発注スケジュールを管理します。店舗休み・業者休みも設定できます。</p>
+  </div>
+</section>
+
+<!-- 3. 焼き鳥発注 -->
+<section id="yaki">
+  <h2>3. 焼き鳥発注ページ</h2>
+
+  <h3>日付の選択</h3>
+  <p>画面上部の「◀前週 ／ 翌週▶」ボタンまたは日付入力欄で日付を移動できます。日付タブをタップして日を切り替えます。</p>
+
+  <h3>テーブルの各列</h3>
+  <table class="ref">
+    <tr><th>列名</th><th>内容</th></tr>
+    <tr><td>名称（目安）</td><td>品目名と1日の目安数量</td></tr>
+    <tr><td>納品</td><td>前々日の発注分（自動表示）</td></tr>
+    <tr><td>在庫数</td><td>現在の在庫数（納品・残数により自動計算）</td></tr>
+    <tr><td>残数</td><td>営業終了時の残数を入力　またはカメラ入力</td></tr>
+    <tr><td>予想</td><td>計算ボタンで自動計算</td></tr>
+    <tr><td>発注</td><td>実際の発注数（最後に手動調整してください）<br>※ 納品日の「納品」欄にこの数字が自動で連動されます</td></tr>
+  </table>
+
+  <h3>注文日数</h3>
+  <p>発注する日数を <strong>1日・2日・3日</strong> から選択します。翌々日納品が基本（中1日）です。</p>
+  <div class="tip">2日分・3日分を選ぶと予想数が増えます。翌日は自動で「発注なし」になります。</div>
+
+  <h3>コース人数</h3>
+  <p>コース料理の予約人数（納品日当日の）を入力すると、コース対象品目の予想数に加算されます。</p>
+
+  <h3>ボタン操作</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>予想数を計算</strong>　残数・在庫数をもとに発注数を自動計算します</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>💾 保存</strong>　入力内容を保存します（タブ切替時も自動保存）</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>リセット</strong>　その日のデータを消去します</div>
+  </div>
+</section>
+
+<!-- 4. 原料発注 -->
+<section id="raw">
+  <h2>4. 原料発注ページ</h2>
+  <p>焼き鳥発注ページと同じ操作感で、もも肉・タレなど原料の発注を管理します。</p>
+  <div class="card">
+    <div class="card-title">焼き鳥発注との違い</div>
+    <p>・品目ごとに <strong>単位</strong>（Kg・本・袋など）を設定できます<br>
+       ・発注数の右に単位が表示されます（例: <code>10 Kg</code>）<br>
+       ・予想数・発注数は <strong>1単位</strong> 刻みです（焼き鳥は5本単位）<br>
+       ・コース対象の設定はありません</p>
+  </div>
+
+  <h3>1パックの単位</h3>
+  <p>原料によっては「1パック◯Kg」のように、まとめ売りの単位があります。設定パネルの <strong>「1パック」</strong> に1パックあたりの量を入力すると、発注数がその単位で自動的に切り上げられます。</p>
+  <table class="ref">
+    <tr><th>設定</th><th>発注数の動き</th></tr>
+    <tr><td>1パック = 1</td><td>1単位ごと（切り上げなし・初期設定）</td></tr>
+    <tr><td>1パック = 2</td><td>2の倍数に切り上げ（2・4・6…）</td></tr>
+    <tr><td>1パック = 5</td><td>5の倍数に切り上げ（5・10・15…）</td></tr>
+  </table>
+  <div class="tip">例：もも肉が1パック2Kgなら「2」と入力。予想が3Kgでも発注は4Kg（2パック分）になります。</div>
+</section>
+
+<!-- 5. カレンダー -->
+<section id="cal">
+  <h2>5. カレンダーページ</h2>
+  <p>月単位で発注スケジュールを確認・設定できます。</p>
+
+  <h3>日付をタップすると設定できる内容</h3>
+  <table class="ref">
+    <tr><th>設定項目</th><th>内容</th></tr>
+    <tr><td>🏪 店舗休み</td><td>その日が店舗の定休日</td></tr>
+    <tr><td>🚚 業者の休み</td><td>その日が業者の休日</td></tr>
+    <tr><td>発注　なし</td><td>その日は発注しない</td></tr>
+    <tr><td>発注　1日分</td><td>通常の1日分を発注（標準）</td></tr>
+    <tr><td>発注　2日分</td><td>2日分まとめて発注（翌日は自動で発注なし）</td></tr>
+    <tr><td>発注　3日分</td><td>3日分まとめて発注（翌日・翌々日は自動で発注なし）</td></tr>
+  </table>
+
+  <div class="tip">2日分・3日分に設定すると翌日が自動で「発注なし」になります。設定を戻すと翌日も元に戻ります。</div>
+
+  <h3>カレンダーのバッジ表示</h3>
+  <table class="ref">
+    <tr><th>バッジ</th><th>意味</th></tr>
+    <tr><td>店休</td><td>店舗休み</td></tr>
+    <tr><td>業者休</td><td>業者の休日</td></tr>
+    <tr><td>発注なし</td><td>発注しない日</td></tr>
+    <tr><td>発注1日</td><td>1日分発注</td></tr>
+    <tr><td>発注2日</td><td>2日分発注</td></tr>
+    <tr><td>発注3日</td><td>3日分発注</td></tr>
+  </table>
+</section>
+
+<!-- 6. 品目設定 -->
+<section id="settings">
+  <h2>6. 品目設定</h2>
+  <p>各ページの <strong>⚙️ 品目名・目安を設定 ▼</strong> ボタンをタップすると設定パネルが開きます。</p>
+
+  <h3>焼き鳥発注の設定項目</h3>
+  <table class="ref">
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>品目名</td><td>テーブルに表示される商品名</td></tr>
+    <tr><td>1日目安</td><td>1日の標準使用数（予想計算に使用）</td></tr>
+    <tr><td>コース対象</td><td>ON にするとコース人数が予想数に加算</td></tr>
+  </table>
+
+  <h3>原料発注の設定項目</h3>
+  <table class="ref">
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>品目名</td><td>原料の名前（例：もも肉、タレ）</td></tr>
+    <tr><td>1日目安</td><td>1日の標準使用量</td></tr>
+    <tr><td>単位</td><td>Kg・本・袋などの単位</td></tr>
+  </table>
+
+  <div class="tip">設定を変更したら「保存」ボタンを押してください。</div>
+</section>
+
+<!-- 7. 計算式 -->
+<section id="formula">
+  <h2>7. 予想数の計算式</h2>
+  <div class="formula-box">
+    予想 ＝ (1日目安 × 注文日数 ＋ コース人数)<br>
+    　　　　− (残数 ＋ 翌日納品 − 1日目安)
+  </div>
+  <table class="ref">
+    <tr><th>変数</th><th>内容</th></tr>
+    <tr><td>1日目安</td><td>品目設定で設定した標準数</td></tr>
+    <tr><td>注文日数</td><td>1日・2日・3日の選択値</td></tr>
+    <tr><td>コース人数</td><td>コース対象品目のみ加算</td></tr>
+    <tr><td>残数</td><td>その日入力した残数</td></tr>
+    <tr><td>翌日納品</td><td>翌日の発注欄に入っている数</td></tr>
+  </table>
+  <div class="tip">計算後も発注欄は手動で調整できます。</div>
+</section>
+
+<!-- 8. OCR -->
+<section id="ocr">
+  <h2>8. カメラ・写真入力（OCR）</h2>
+  <p>残数を手入力する代わりに、棚の写真を撮って数字を読み取ることができます。</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>📷 カメラで撮影</strong> または <strong>🖼️ 写真から選ぶ</strong> をタップ</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">棚や在庫票を撮影 / 写真を選択</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">読み取り結果が表示されるので、各品目の数値を確認・修正</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body"><strong>この内容で入力</strong> をタップすると残数欄に反映</div>
+  </div>
+
+  <div class="warn">OCRの精度は撮影環境に依存します。読み取り後は必ず数値を確認してください。</div>
+</section>
+
+<!-- 9. 記録用紙 -->
+<section id="sheet">
+  <h2>9. 記録用紙（印刷）</h2>
+  <p>残数を紙に書いてから写真で読み取りたい場合に使う、焼き鳥・串焼き専用の記録用紙です。画面上部の <strong>「🖨️ 焼き鳥 記録用紙を印刷」</strong> から開けます。</p>
+  <div class="card">
+    <div class="card-title">用紙の特徴</div>
+    <p>・A4用紙に <strong>6枚分</strong>（1枚＝1日分）印刷されます<br>
+       ・品目名はアプリの設定と同じものが自動で入ります<br>
+       ・各品目の右に、数字を書く大きな枠があります</p>
+  </div>
+  <h3>使い方</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>🖨️ 印刷する</strong> ボタンでA4に印刷</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">営業終了後、各品目の残数を<strong>枠の中に大きくハッキリ</strong>と記入</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">記入した1枚分を<strong>カメラで撮影</strong>（→ 8章のOCRで読み取り）</div>
+  </div>
+  <div class="tip">数字は枠からはみ出さず、はっきり書くと読み取りやすくなります。</div>
+</section>
+
+<!-- 10. 画面の色 -->
+<section id="theme">
+  <h2>10. 画面の色（白・黒）</h2>
+  <p>画面の色を、明るい<strong>ホワイト</strong>と暗い<strong>ブラック</strong>から選べます。</p>
+  <div class="card">
+    <div class="card-title">切り替え方</div>
+    <p>画面右上の <strong>☀️ / 🌙</strong> ボタンをタップすると切り替わります。<br>
+       ・🌙 を押す → ホワイト（白）モード<br>
+       ・☀️ を押す → ブラック（黒）モード</p>
+  </div>
+  <div class="tip">選んだ色は記憶され、次に開いたときも同じ色になります。明るい店内では白、暗めの店内では黒が見やすいです。</div>
+</section>
+
+<!-- 11. コツ -->
+<section id="tips">
+  <h2>11. 使い方のコツ</h2>
+
+  <h3>はじめの設定</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">当日・翌日の<strong>納品数</strong>を入力</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>商品名</strong>を設定（焼き鳥・原料ページとも）</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>1日の目安数</strong>を設定する（この数字をもとに計算致します）</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">コースなど予約人数で確実に増える商品に<strong>チェック</strong>を入れる</div>
+  </div>
+
+  <h3>毎日の基本的な流れ</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">営業終了後、<strong>残数</strong>と<strong>在庫数</strong>を入力（またはカメラで撮影）</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">納品日のコース予約があれば<strong>コース人数</strong>を入力</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>予想数を計算</strong>をタップ</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">発注数を確認・手動調整して<strong>💾 保存</strong></div>
+  </div>
+
+  <h3>週初めにやること</h3>
+  <ul>
+    <li>カレンダーで業者の休みや店休日を設定しておく</li>
+    <li>業者が休む前日は2日分・3日分に設定しておく</li>
+  </ul>
+
+  <div class="tip">店舗名は画面上部に表示されます。タップして入力できます。</div>
+  <div class="warn">ブラウザのキャッシュをクリアするとデータが消える場合があります。重要なデータはメモに控えておくことをおすすめします。</div>
+</section>
+
+<!-- 12. 解約・お問い合わせ -->
+<section id="support">
+  <h2>12. 解約・お問い合わせ</h2>
+
+  <h3>解約したいとき</h3>
+  <p>下記のメールアドレスへ「解約希望」とご連絡ください。確認のうえ、こちらで解約手続きを行います。</p>
+  <p><a href="mailto:mycomise@gmail.com">mycomise@gmail.com</a></p>
+  <div class="tip">解約後は本番版のアクセスコードが使えなくなります。無料の体験版は引き続きご利用いただけます。</div>
+
+  <h3>お困りのとき</h3>
+  <p>アクセスコードが届かない、ログインできない、使い方が分からないなども、同じアドレスへご連絡ください。</p>
+</section>
+
+<div style="text-align:center;color:#666;font-size:0.8rem;padding:24px 16px 0;">
+  串焼き・焼き鳥 発注表 © 2025
+</div>
+
+</body>
+</html>
